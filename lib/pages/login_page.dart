@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart'as http;
-import 'package:fluttercnam/pages/PagePrincipale.dart';
+import 'package:fluttercnam/pages/curvedBar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage>{
                  Navigator.pushAndRemoveUntil(
                      context,
                      MaterialPageRoute(
-                       builder:(context)=> Pageprincipale()
+                       builder:(context)=> curvedBar()
 
                      ),
                          (Route<dynamic> route)=>false);

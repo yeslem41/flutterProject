@@ -1,6 +1,7 @@
 //import 'dart:io';
 import 'package:fluttercnam/pages/AfterRecu.dart';
 import 'package:fluttercnam/pages/PagePrincipale.dart';
+import 'package:fluttercnam/pages/curvedBar.dart';
 //import 'package:splashscreen/splashscreen.dart';
 //import 'package:toast/toast.dart';
 import 'package:flutter/cupertino.dart';
@@ -65,8 +66,8 @@ class MyApp extends StatelessWidget{
       ),
       //home: Auth.isLogin?Pageprincipale():LoginPage(),
       routes: {
-       '/':(context)=> loged ? Pageprincipale():Splash(),
-       '/PagePrincipale':(_) => Pageprincipale(),
+       '/':(context)=> loged ? curvedBar():Splash(),
+       '/PagePrincipale':(_) => curvedBar(),
         '/AfterRecu':(_)=>AfterRecu(),
         '/LoginPage':(_)=>LoginPage(),
       }
