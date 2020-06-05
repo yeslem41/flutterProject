@@ -22,9 +22,42 @@ class _PageprincipaleState extends State<Pageprincipale>{
       var recuController =  TextEditingController();
       String checkedInput = '';
       bool loading = false;
-      List user = [],Array=[];
+      List user = [],logeouts=[];
       var formKey = GlobalKey <FormState>();
-      bool pressed = false;
+      bool pressed = false, outConfirm=false;
+
+_logoutConfirmed() async{
+             setState(() {outConfirm=true;});
+             _logout();
+     SharedPreferences use = await SharedPreferences.getInstance();
+ var  url='https://miage2a2i.000webhostapp.com/index_cnam.php?logeout=yes&recunni='+use.getString("recu");
+  try{
+      http.Response response = await http.get(url);
+      if(response.statusCode != 200)
+             throw 'errer of server';
+       logeouts = json.decode(response.body); 
+       print(logeouts);
+       }catch(e){
+         print(e);
+       }
+       if(logeouts.isEmpty){
+             Toast.show('errer de connection', context,duration: 2,gravity: Toast.CENTER);
+       }else{print(logeouts[0]["logeout"]);
+         if(logeouts[0]["logeout"] == "true"){
+                    print('logeout true');
+                    use.remove("login");
+                     use.remove("recu");
+                     Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context)=>LoginPage(),
+                                  ),
+                                  (Route<dynamic> route)=>false);
+          }else 
+                   print('logeout false');        
+       }   
+}
+
 
     _passing() async{
        user.clear();
@@ -54,7 +87,8 @@ class _PageprincipaleState extends State<Pageprincipale>{
                   user.clear(); _dialog();//Navigator.of(context).pushNamed('/AfterRecu', arguments: user);
                   }else{
                print(user);
-               //Navigator.of(context).pushNamed('/AfterRecu', arguments: user);
+               user.add(recuController.text);
+               Navigator.of(context).pushNamed('/AfterRecu', arguments: user);
              }
             }else{
               Toast.show('erreur du connection', context,duration: 2,gravity:Toast.CENTER,backgroundColor: Colors.black);
@@ -62,7 +96,7 @@ class _PageprincipaleState extends State<Pageprincipale>{
 
          }}
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {print('object');
     return Scaffold(
         primary: true,
         backgroundColor: Colors.white,
@@ -76,8 +110,8 @@ class _PageprincipaleState extends State<Pageprincipale>{
 
               InkWell(
                 onTap:_logout,
-                child:Text('الخروج',style: TextStyle(color: Colors.white70,fontSize: 13),),
-              ),
+                child:Text('الخروج\u2264',style: TextStyle(color: Colors.white70,fontSize: 13),)
+                          ),
               Text('ماكنامي',style: TextStyle(color: Colors.white),
               ),
               InkWell(
@@ -186,7 +220,7 @@ class _PageprincipaleState extends State<Pageprincipale>{
                     textDirection: TextDirection.rtl,
                     textAlign: TextAlign.center,
                     obscureText: false,
-                    maxLength: 10,
+                    maxLength: 14,
                    // keyboardType : TextInputType.number,
                     textInputAction: TextInputAction.done,
                     validator: (val)=> val.length ==0 ? "ادخل رقم وصلك" : (val.length <5 ? "رقم الوصل غير صحيح" : null),
@@ -288,6 +322,8 @@ class _PageprincipaleState extends State<Pageprincipale>{
         },
         );
       }
+     
+     
      _logout()async{
         showGeneralDialog(
           barrierLabel: 'label',
@@ -296,7 +332,21 @@ class _PageprincipaleState extends State<Pageprincipale>{
             transitionDuration: Duration(milliseconds:0),
             context: context,
             pageBuilder: (context,anim1,anim2){
-              return Align(
+              return _logeoutSession();
+            },
+        );
+     }
+     Widget _logeoutSession(){
+        
+       if(outConfirm){
+         return Container(
+           height: MediaQuery.of(context).size.height/2,
+           child: Center(
+                 child: CircularProgressIndicator(),
+           ),
+         );
+       }{
+          return Align(
                     alignment: Alignment.topCenter,
                 child: Container(
 
@@ -331,17 +381,10 @@ class _PageprincipaleState extends State<Pageprincipale>{
                             child: Text('ليس الآن',style: TextStyle(fontSize: 10,decoration: TextDecoration.none),),
                           ),
                           GestureDetector(
-                            onTap: ()async{
-                              SharedPreferences logout = await SharedPreferences.getInstance();
-                              logout.remove("login");
-                              logout.remove("NIN");
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context)=>LoginPage(),
-                                  ),
-                                  (Route<dynamic> route)=>false);
-                            },
+                            onTap:(){
+                              Navigator.pop(context);
+                              _logoutConfirmed();
+                              },
                              child:Text('نعم الآن',style: TextStyle(fontSize: 10,decoration: TextDecoration.none),),
                           )
 
@@ -354,11 +397,7 @@ class _PageprincipaleState extends State<Pageprincipale>{
 
                 ),
               );
-            },
-        );
-
-
-
+       }
      }
      _appDescription(){
        showGeneralDialog(

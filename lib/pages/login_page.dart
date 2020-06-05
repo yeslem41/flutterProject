@@ -46,11 +46,11 @@ class _LoginPageState extends State<LoginPage>{
                  user.clear();
                  _dialog();
                }else {
-                 user.clear();
-                 SharedPreferences Login = await SharedPreferences.getInstance();
-                 Login.setString("NIN", NIN);
-                 Login.setBool("login", true);
-                 print(Login.getBool("login").toString()+"  "+Login.getString("NIN").toString());
+                 print(user);
+                 SharedPreferences login = await SharedPreferences.getInstance();
+                 login.setString("recu", user[0]["id"]);
+                 login.setBool("login", true);
+                 print(login.getBool("login").toString()+"  "+login.getString("recu").toString());
                  Navigator.pushAndRemoveUntil(
                      context,
                      MaterialPageRoute(
@@ -70,15 +70,10 @@ class _LoginPageState extends State<LoginPage>{
       //if (LoginPage.isLogin)
        // return Pageprincipale();
         final password = TextFormField(
-          keyboardType: TextInputType.number,
           controller: myController,
           textAlign: TextAlign.center,
           obscureText: false,
-          validator: (val) =>
-          val.length == 0 ? "entre votre nni ou inam" : (val.length < 10
-              ? "NIN incorrect re-entrer"
-              : null),
-          maxLength: 10,
+          validator: (val) =>val.length == 0 ? "entre votre nni ou inam" :null,
           decoration: InputDecoration(
             filled: true,
             fillColor: Colors.white,
@@ -143,7 +138,7 @@ class _LoginPageState extends State<LoginPage>{
                               child: Column(
                                 children: <Widget>[
                                   password,
-                                  SizedBox(height: 20.0,),
+                                  SizedBox(height: 30.0,),
                                   buttonField,
                                 ],
                               )

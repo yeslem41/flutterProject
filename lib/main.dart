@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget{
                    print(loged);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'user Login',
+      title: 'MACNAMI',
       theme: ThemeData(
         primarySwatch: MaterialColor(0XFF2e3a8a, {
           50: Color.fromRGBO(18, 23, 54, 0.1),
@@ -82,7 +82,13 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   void initState(){
     super.initState();
-    Future.delayed(Duration(seconds:3),()=>Navigator.of(context).pushNamed('/LoginPage'));
+    Future.delayed(Duration(seconds:3),()=>Navigator.pushAndRemoveUntil(
+                     context,
+                     MaterialPageRoute(
+                       builder:(context)=> LoginPage()
+
+                     ),
+                         (Route<dynamic> route)=>false));
   }
   @override
   Widget build(BuildContext context) {
