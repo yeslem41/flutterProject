@@ -14,6 +14,7 @@ void main() async{
   SharedPreferences login = await SharedPreferences.getInstance();
    var loged = login.getBool("login");
    bool myApp = loged==null ? false : loged;
+   bool test = true;
   return runApp(MyApp(loged: myApp,));
 }
 class MyApp extends StatelessWidget{
