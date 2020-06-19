@@ -241,7 +241,7 @@ class _curvedBarState extends State<curvedBar> {
                   child: MaterialButton(
                     minWidth: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                    onPressed:!pressed?_passing:(){print('object');},
+                    onPressed:!pressed?_passing:null,
                     child: Text('التالي',textDirection: TextDirection.rtl,
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.white),
@@ -309,35 +309,11 @@ class _curvedBarState extends State<curvedBar> {
           }
           break;
           default: {
-            //
+            return null;
           }
           break;
         }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -387,9 +363,9 @@ _passing() async{
        user.clear();
       if(formKey.currentState.validate()){
           formKey.currentState.save();
-          setState(() {pressed=true;});
           if (checkedInput.isEmpty)
           return Toast.show('svp choisir une service', context, duration: 3, gravity: Toast.CENTER,backgroundColor: Colors.black);
+          setState(() {pressed=true;});
 
            _showIndecator();
         FocusScope.of(context).unfocus();

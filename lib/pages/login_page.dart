@@ -111,9 +111,7 @@ class _LoginPageState extends State<LoginPage>{
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     loading ? LinearProgressIndicator(
-                      backgroundColor: Theme
-                          .of(context)
-                          .secondaryHeaderColor,) : Container(),
+                      backgroundColor: Theme.of(context).secondaryHeaderColor,) : Container(),
                     Container(
                       height: 100.0,
                       width: double.infinity,
@@ -185,11 +183,11 @@ class _LoginPageState extends State<LoginPage>{
                 children: <Widget>[
                   Text('SALUT ',style: TextStyle(fontSize: 25,decoration: TextDecoration.none),  ),
                   Divider(),
-                  Text('vorte dossier est hors du traitement ou vous avez saisi un faux NIN',
+                  Text('vorte dossier est hors du traitement ou vous avez saisi un faux NIN ou matricule',
                     style: TextStyle(fontSize: 16,decoration: TextDecoration.none),textAlign: TextAlign.center,),
                   Divider(height: 15,),
                   Container(height: 30,),
-                  Text('Si vous etes sur que vous avez un cnam count re-saisir ton NIN',style: TextStyle(fontSize: 16,decoration: TextDecoration.none),
+                  Text('Si vous etes sur que vous avez un cnam count re-saisir ton NIN ou ton matricule',style: TextStyle(fontSize: 16,decoration: TextDecoration.none),
                     textAlign: TextAlign.center,),
                   Divider(height: 15,),
                   Container(height: 25,),

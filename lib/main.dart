@@ -2,10 +2,12 @@
 import 'package:fluttercnam/pages/AfterRecu.dart';
 import 'package:fluttercnam/pages/PagePrincipale.dart';
 import 'package:fluttercnam/pages/curvedBar.dart';
+
 //import 'package:splashscreen/splashscreen.dart';
 //import 'package:toast/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttercnam/pages/dashpoard.dart';
 import 'package:fluttercnam/pages/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,7 +16,6 @@ void main() async{
   SharedPreferences login = await SharedPreferences.getInstance();
    var loged = login.getBool("login");
    bool myApp = loged==null ? false : loged;
-   bool test = true;
   return runApp(MyApp(loged: myApp,));
 }
 class MyApp extends StatelessWidget{
@@ -67,7 +68,7 @@ class MyApp extends StatelessWidget{
       ),
       //home: Auth.isLogin?Pageprincipale():LoginPage(),
       routes: {
-       '/':(context)=> loged ? curvedBar():Splash(),
+       '/':(context)=> loged ? curvedBar():Dashboard(),
        '/PagePrincipale':(_) => curvedBar(),
         '/AfterRecu':(_)=>AfterRecu(),
         '/LoginPage':(_)=>LoginPage(),
@@ -94,32 +95,22 @@ class _SplashState extends State<Splash> {
   }
   @override
   Widget build(BuildContext context) {
-    return Stack(
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                gradient:LinearGradient(
-                  //center:FractionalOffset.center,
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                 // transform: GradientRotation(3.144/3),
-                  colors: [Theme.of(context).accentColor,Theme.of(context).primaryColor,Theme.of(context).secondaryHeaderColor],
-                  //stops: [0.3,0.5,0.1],
+    return Scaffold(
+           
+         backgroundColor: Colors.white,   
+         body:Center(  
+           
+                child:Container(
+                  color: Colors.white,
+                     height: 150,
+                     child: Center(
+                       child:Image.asset('images/cnami.jpg'),
+                     ),
 
-                )
-              ),
-            ),
-            Center(
-
-                  child:Text('Bienvenue à Macnami',style: TextStyle(
-                          decoration: TextDecoration.none,
-                          color: Colors.white,
-                          fontSize: 12
-                      ),),
-
-            )
-          ],
-    );/*Scaffold(
+              ))
+          
+    );
+    /*Scaffold(
       body:Center(
            child: Image(
              width: 100,
