@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttercnam/pages/dashpoard.dart';
 import 'package:fluttercnam/pages/login_page.dart';
+import 'package:fluttercnam/pages/reclamation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async{
@@ -68,16 +69,19 @@ class MyApp extends StatelessWidget{
       ),
       //home: Auth.isLogin?Pageprincipale():LoginPage(),
       routes: {
-       '/':(context)=> loged ? curvedBar():Dashboard(),
+       '/':(context)=>Splash(loged: loged),
        '/PagePrincipale':(_) => curvedBar(),
         '/AfterRecu':(_)=>AfterRecu(),
         '/LoginPage':(_)=>LoginPage(),
+        '/Reclammation':(_)=>Reclammation(),
       }
     );
   }
 }
 //LoginPage
 class Splash extends StatefulWidget {
+  bool loged;
+  Splash({this.loged});
   @override
   _SplashState createState() => _SplashState();
 }
@@ -85,13 +89,12 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   void initState(){
     super.initState();
-    Future.delayed(Duration(seconds:3),()=>Navigator.pushAndRemoveUntil(
-                     context,
-                     MaterialPageRoute(
-                       builder:(context)=> LoginPage()
-
-                     ),
-                         (Route<dynamic> route)=>false));
+    Future.delayed(Duration(seconds:3),(){
+      if(widget.loged)
+        return Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder:(context)=> Dashboard()),(Route<dynamic> route)=>false);
+      else 
+        return Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder:(context)=> LoginPage()),(Route<dynamic> route)=>false);            
+                     });
   }
   @override
   Widget build(BuildContext context) {

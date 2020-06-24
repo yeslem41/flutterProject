@@ -66,7 +66,7 @@ class _AfterRecuState extends State<AfterRecu> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title:Text(infoUser[2]["cheked"]) ,
+        title:Text(infoUser[3]["cheked"]) ,
         centerTitle: true,/*Row(
               children: <Widget>[
                 Row(
@@ -91,7 +91,7 @@ class _AfterRecuState extends State<AfterRecu> {
                             
                               children:<Widget>[
                                  Text(
-                                infoUser[2]['cheked'],
+                                infoUser[3]['cheked'],
                                 textAlign: TextAlign.end,
                             ),
                               ]
@@ -100,21 +100,22 @@ class _AfterRecuState extends State<AfterRecu> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             
                               children:<Widget>[
-                                 Text(infoUser[2]['cheked']+' matricule est :'+infoUser[1]['ARid'] ,
+                                 Text(infoUser[3]['cheked']+' matricule est :'+infoUser[1]['ARid'] ,
                                 textAlign: TextAlign.end,
                             ),
                               ]
                             ),
                      Padding(
                        padding: EdgeInsets.only(left:10,right:10,top:35,),
-                      child: Text(
-                          ' رحبا بكم فى خدمة ماك نام مرحبا بكم فى خدمة ماك نام مرحبا بكم فى خدمة ماك ناممرحبا بكم فى خدمة ماك نام مرحبا بكم فى خدمة ماك نام مرحبا بكم فى خدمة ماك نام مرحبا بكم فى خدمة ماك ناممرحبا بكم فى خدمة ماك نام',
-                              textAlign: TextAlign.end,
-                              style: TextStyle(
-                                   fontSize: 18,
-                                   color: Colors.black
+                                child: Text(
+                                            infoUser[2]['libelle'],
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                        ),
+                                        ),
                               ),
-                              ),),
                               SizedBox(height: 35,),
                                Column(
                                       crossAxisAlignment : CrossAxisAlignment.end,

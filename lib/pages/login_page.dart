@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttercnam/pages/dashpoard.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart'as http;
 import 'package:fluttercnam/pages/curvedBar.dart';
@@ -54,7 +55,7 @@ class _LoginPageState extends State<LoginPage>{
                  Navigator.pushAndRemoveUntil(
                      context,
                      MaterialPageRoute(
-                       builder:(context)=> curvedBar()
+                       builder:(context)=> Dashboard()
 
                      ),
                          (Route<dynamic> route)=>false);

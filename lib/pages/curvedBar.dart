@@ -377,7 +377,7 @@ _passing() async{
            throw "errer dr server";
          user = json.decode(reponse.body);
        }catch(e){
-         print(e);
+         Toast.show('erreur du service', context,duration: 2,gravity:Toast.CENTER,backgroundColor: Colors.black);
        }
        setState(() {pressed=false;});
         Navigator.pop(context);
@@ -388,7 +388,8 @@ _passing() async{
                   user.clear(); _dialog();//Navigator.of(context).pushNamed('/AfterRecu', arguments: user);
                   }else{
                print(user);
-               user.add(recuController.text);
+              //  user.add(recuController.text);
+              //  print(user);
                Navigator.of(context).pushNamed('/AfterRecu', arguments: user);
              }
             }else{
