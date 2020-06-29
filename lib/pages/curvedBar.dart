@@ -373,8 +373,9 @@ _passing() async{
 
        try {
          var reponse = await http.get('https://miage2a2i.000webhostapp.com/get_recu.php?recu='+recuController.text+'&cheked='+checkedInput);
+      
          if(reponse.statusCode != 200)
-           throw "errer dr server";
+              throw "errer dr server";
          user = json.decode(reponse.body);
        }catch(e){
          Toast.show('erreur du service', context,duration: 2,gravity:Toast.CENTER,backgroundColor: Colors.black);
@@ -387,9 +388,7 @@ _passing() async{
              if(user[0]["recuId"]=="no"){
                   user.clear(); _dialog();//Navigator.of(context).pushNamed('/AfterRecu', arguments: user);
                   }else{
-               print(user);
-              //  user.add(recuController.text);
-              //  print(user);
+               user.add(recuController.text);
                Navigator.of(context).pushNamed('/AfterRecu', arguments: user);
              }
             }else{

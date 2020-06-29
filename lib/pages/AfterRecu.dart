@@ -19,7 +19,7 @@ class _AfterRecuState extends State<AfterRecu> {
      List infoUser = [];
      TextEditingController textController = TextEditingController();
      bool progress = false,snake=false;
-     String snakeSms='';
+     String snakeSms='',sms='';
      GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   //   @override
   // void initState() {
@@ -60,7 +60,17 @@ class _AfterRecuState extends State<AfterRecu> {
   @override
   Widget build(BuildContext context) {
        infoUser = ModalRoute.of(context).settings.arguments;
-       print(infoUser);
+       switch (infoUser[2]['libelle']) {
+         case 'saisie':
+         case 'premier validation':
+         case 'deuxieme validation':
+          setState(() { sms = 'En cours de traitement';});break;
+         case 'en attente de paiment':  
+         case 'en attente de validation bordereau': 
+          setState(() { sms = 'En cours de paiement';});break; 
+         default:
+       }
+      //  print(infoUser);
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,
@@ -108,7 +118,7 @@ class _AfterRecuState extends State<AfterRecu> {
                      Padding(
                        padding: EdgeInsets.only(left:10,right:10,top:35,),
                                 child: Text(
-                                            infoUser[2]['libelle'],
+                                            sms,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontSize: 16,
@@ -116,6 +126,33 @@ class _AfterRecuState extends State<AfterRecu> {
                                         ),
                                         ),
                               ),
+                              SizedBox(height:10),
+                              Padding(
+                                padding:EdgeInsets.fromLTRB(15, 2, 15, 2),
+                                child: Table(
+                                    border: TableBorder.all(),
+                                    children: [
+                                      TableRow(
+                                        
+                                          children:[
+                                                Text('recu',textAlign: TextAlign.center,),
+                                                
+                                                Text('matricule',textAlign: TextAlign.center,),
+                                                
+                                                Text('Mnt remboursé',textAlign: TextAlign.center,),
+                                          ] 
+                                      ),
+                                      TableRow(
+                                          children:[
+                                                Text(infoUser[5],textAlign: TextAlign.center,),
+                                                
+                                                Text(infoUser[1]['ARid'],textAlign: TextAlign.center,),
+                                                
+                                                Text(infoUser[4]['mntR']!=null ? infoUser[4]['mntR'] :'invalid',textAlign: TextAlign.center,),
+                                          ] 
+                                      ),
+                                    ],    
+                                      )),
                               SizedBox(height: 35,),
                                Column(
                                       crossAxisAlignment : CrossAxisAlignment.end,

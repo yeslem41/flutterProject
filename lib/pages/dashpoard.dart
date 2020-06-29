@@ -15,7 +15,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor:Theme.of(context).secondaryHeaderColor,
+      // backgroundColor:Theme.of(context).secondaryHeaderColor,
         body:
       // SafeArea(
       //    child:Column(
@@ -38,14 +38,16 @@ class _DashboardState extends State<Dashboard> {
       //    ],)),
     
      new SafeArea(
-        child:Column(
-          children: <Widget>[
-            Container( 
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(left:50,right: 50),
-              color:Theme.of(context).primaryColor,
-            child:Container(     
-                          color:Colors.white,
+       child:Container(
+         color: Theme.of(context).secondaryHeaderColor,
+                child:Column(
+                  children: <Widget>[
+                    Container( 
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.only(left:50,right: 50),
+                      color:Theme.of(context).primaryColor,
+                    child:Container(     
+                                  color:Colors.white,
                           height: 80.0,
                           child: Padding(
                             
@@ -207,14 +209,14 @@ class _DashboardState extends State<Dashboard> {
                               ))
                    ),
 
-     ],)),
+     ],))),
     
      bottomNavigationBar: Container(
-          
+          color:Theme.of(context).secondaryHeaderColor,
           height: 15,
-             child: Center(
+             child:Center(
                child:Text('copy right cnam 2020',style: TextStyle(color:Colors.black),)
-             ),
+     )
      ),
       
      );
@@ -241,6 +243,10 @@ class myclipper extends CustomClipper<Path> {
    
     path.lineTo(size.width, 0.0);
 
+    // path.quadraticBezierTo((size.width - size.width/4), 40, size.width/2, 20);
+
+    // path.quadraticBezierTo(size.width/4, 0, 0, 30);
+
     // var thirdControlPoint = Offset(size.width -(size.width/4), 0);
     // var thirdEndPoint = Offset(size.width/2.25, 20);
     // path.quadraticBezierTo(thirdControlPoint.dx, thirdControlPoint.dy,thirdEndPoint.dx, thirdEndPoint.dy);
@@ -263,7 +269,29 @@ class myclipper extends CustomClipper<Path> {
 
   
 }
+class footClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    // TODO: implement getClip
+    Path path = Path();
+    path.lineTo(0.0, size.height);
+    path.lineTo(size.width, size.height);
+    path.lineTo(size.width, 0);
 
+    path.quadraticBezierTo((size.width - size.width/4), 40, size.width/2, 20);
+
+    path.quadraticBezierTo(size.width/4, 0, 0, 30);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    // TODO: implement shouldReclip
+    return null;
+  }
+  
+}
 class CirclePainter extends CustomPainter {
   BuildContext context;
   CirclePainter({this.context});
