@@ -1,12 +1,13 @@
 import 'dart:convert';
-import 'dart:ui';
-
+import 'dart:ui' as ui;
+import 'dart:io' show Platform;
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart'as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:fluttercnam/pages/login_page.dart';
+// import 'package:flutter_localizations/flutter_localizations.dart';
 
 class curvedBar extends StatefulWidget {
   @override
@@ -20,9 +21,10 @@ class _curvedBarState extends State<curvedBar> {
     Color buttonBackColor ;
     //principale
     var recuController =  TextEditingController();
-      String checkedInput = '';
+      String checkedInput = '',_sysLng;
       bool loading = false;
-      List user = [],logeouts=[];
+      List logeouts=[];
+      Map<String,dynamic> user;
       var formKey = GlobalKey <FormState>();
       bool pressed = false;
        SharedPreferences use ;
@@ -31,6 +33,8 @@ class _curvedBarState extends State<curvedBar> {
     // TODO: implement initState
     super.initState();
     init();
+      // Locale myLocale = Localizations.localeOf(context);
+      // String lc = currentLanguageCode(myLocale);
   }
   init()async{
     use = await SharedPreferences.getInstance();
@@ -42,8 +46,12 @@ class _curvedBarState extends State<curvedBar> {
     _controller.dispose();
     
   }
+
   @override
   Widget build(BuildContext context) {
+      
+      // print("language");
+      // print(_sysLng); print("language");
     return Scaffold(
               bottomNavigationBar: CurvedNavigationBar(
                 key: _curvedBar,
@@ -359,8 +367,9 @@ _logoutConfirmed() async{
 
 //functions of home page
 _passing() async{
+  _sysLng = ui.window.locale.languageCode; 
   FocusScope.of(context).unfocus();
-       user.clear();
+      //  user.clear();
       if(formKey.currentState.validate()){
           formKey.currentState.save();
           if (checkedInput.isEmpty)
@@ -372,23 +381,25 @@ _passing() async{
 
 
        try {
-         var reponse = await http.get('https://miage2a2i.000webhostapp.com/get_recu.php?recu='+recuController.text+'&cheked='+checkedInput);
+         var reponse = await http.get('https://miage2a2i.000webhostapp.com/get_recu.php?recu='+recuController.text+'&cheked='+checkedInput+'&lang='+_sysLng+checkedInput);
       
          if(reponse.statusCode != 200)
               throw "errer dr server";
          user = json.decode(reponse.body);
+       
        }catch(e){
          Toast.show('erreur du service', context,duration: 2,gravity:Toast.CENTER,backgroundColor: Colors.black);
        }
        setState(() {pressed=false;});
         Navigator.pop(context);
+          print(user);
             if(user.isNotEmpty) {
              /* if(user[0]["noBody"]=="yes"){ user.clear(); _dialog();}
               else */
-             if(user[0]["recuId"]=="no"){
+             if(user["recuId"]=="no" || user["ARid"]=="no"){
                   user.clear(); _dialog();//Navigator.of(context).pushNamed('/AfterRecu', arguments: user);
                   }else{
-               user.add(recuController.text);
+               user["recu"]=recuController.text; print(user);
                Navigator.of(context).pushNamed('/AfterRecu', arguments: user);
              }
             }else{

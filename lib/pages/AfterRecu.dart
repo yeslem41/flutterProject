@@ -16,10 +16,10 @@ class _AfterRecuState extends State<AfterRecu> {
       //  List formInquity ;
       //    _AfterRecuState.formInquity(this.formInquity);
      Color buttonColor = Color(0xFFe81c8b).withOpacity(0.5);
-     List infoUser = [];
+     Map<String,dynamic> infoUser ;
      TextEditingController textController = TextEditingController();
      bool progress = false,snake=false;
-     String snakeSms='',sms='';
+     String snakeSms='';
      GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   //   @override
   // void initState() {
@@ -60,23 +60,25 @@ class _AfterRecuState extends State<AfterRecu> {
   @override
   Widget build(BuildContext context) {
        infoUser = ModalRoute.of(context).settings.arguments;
-       switch (infoUser[2]['libelle']) {
-         case 'saisie':
-         case 'premier validation':
-         case 'deuxieme validation':
-          setState(() { sms = 'En cours de traitement';});break;
-         case 'en attente de paiment':  
-         case 'en attente de validation bordereau': 
-          setState(() { sms = 'En cours de paiement';});break; 
-         default:
-       }
+      //  switch (infoUser[2]['libelle']) {
+      //    case 'saisie':
+      //    case 'premier validation':
+      //    case 'deuxieme validation':
+      //     setState(() { sms = 'En cours de traitement';});break;
+      //    case 'en attente de paiment':  
+      //    case 'en attente de validation bordereau': 
+      //     setState(() { sms = 'En cours de paiement';});break;
+      //    case 'hors du traitement':
+      //        setState(() {sms = 'votre dossier est en attente de traitement';}); break;
+      //    default:
+      //  }
       //  print(infoUser);
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title:Text(infoUser[3]["cheked"]) ,
+        title:Text(infoUser["cheked"]) ,
         centerTitle: true,/*Row(
               children: <Widget>[
                 Row(
@@ -101,7 +103,7 @@ class _AfterRecuState extends State<AfterRecu> {
                             
                               children:<Widget>[
                                  Text(
-                                infoUser[3]['cheked'],
+                                infoUser['cheked'],
                                 textAlign: TextAlign.end,
                             ),
                               ]
@@ -110,7 +112,7 @@ class _AfterRecuState extends State<AfterRecu> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             
                               children:<Widget>[
-                                 Text(infoUser[3]['cheked']+' matricule est :'+infoUser[1]['ARid'] ,
+                                 Text(infoUser['cheked']+' matricule est :'+infoUser['ARid'] ,
                                 textAlign: TextAlign.end,
                             ),
                               ]
@@ -118,7 +120,7 @@ class _AfterRecuState extends State<AfterRecu> {
                      Padding(
                        padding: EdgeInsets.only(left:10,right:10,top:35,),
                                 child: Text(
-                                            sms,
+                                            infoUser['libelle'],
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontSize: 16,
@@ -138,17 +140,17 @@ class _AfterRecuState extends State<AfterRecu> {
                                                 Text('recu',textAlign: TextAlign.center,),
                                                 
                                                 Text('matricule',textAlign: TextAlign.center,),
-                                                
-                                                Text('Mnt remboursé',textAlign: TextAlign.center,),
+                                                if(infoUser['mntR']!=null)
+                                                  Text('Mnt remboursé',textAlign: TextAlign.center,),
                                           ] 
                                       ),
                                       TableRow(
                                           children:[
-                                                Text(infoUser[5],textAlign: TextAlign.center,),
+                                                Text(infoUser["recu"],textAlign: TextAlign.center,),
                                                 
-                                                Text(infoUser[1]['ARid'],textAlign: TextAlign.center,),
-                                                
-                                                Text(infoUser[4]['mntR']!=null ? infoUser[4]['mntR'] :'invalid',textAlign: TextAlign.center,),
+                                                Text(infoUser['ARid'],textAlign: TextAlign.center,),
+                                                if(infoUser['mntR']!=null)
+                                                 Text(infoUser['mntR'],textAlign : TextAlign.center,),
                                           ] 
                                       ),
                                     ],    

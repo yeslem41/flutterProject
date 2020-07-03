@@ -24,7 +24,6 @@ class MyApp extends StatelessWidget{
   MyApp({this.loged});
   @override
   Widget build(BuildContext context){
-                   print(loged);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'MACNAMI',
