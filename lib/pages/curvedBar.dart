@@ -367,6 +367,8 @@ _logoutConfirmed() async{
 
 //functions of home page
 _passing() async{
+  print(user);
+  user?.clear();print(user);
   _sysLng = ui.window.locale.languageCode; 
   FocusScope.of(context).unfocus();
       //  user.clear();
