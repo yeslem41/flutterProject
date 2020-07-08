@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 import 'dart:io' show Platform;
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:http/http.dart'as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
@@ -26,7 +27,7 @@ class _curvedBarState extends State<curvedBar> {
       List logeouts=[];
       Map<String,dynamic> user;
       var formKey = GlobalKey <FormState>();
-      bool pressed = false;
+      bool pressed = false,goBack=false;
        SharedPreferences use ;
     @override
   void initState() {
@@ -49,7 +50,6 @@ class _curvedBarState extends State<curvedBar> {
 
   @override
   Widget build(BuildContext context) {
-      
       // print("language");
       // print(_sysLng); print("language");
     return Scaffold(
@@ -109,7 +109,6 @@ class _curvedBarState extends State<curvedBar> {
                         child:Text(
                           'كنامي هو تطبيق يتيح لمؤمني الصندوق الوطني للتأمين الصحي (كنام) بمتابعة ملفاتهم المودعه لدي مصاح الصندوق لغرض إطلاعهم علي مرحلة معالجتها. \nفبإمكان مستخدمي هذا التطبيق الحصول علي المعلومات الكافيه المتعلقه بملفاتهم التعويضيه و كذالك الإنتسابيه, كما أن بإمكانهم طلب إستفسار موجه لمصالح الصندوق المختصه في حال حصول تأخير في معالجة أي من ملفاتهم المذكورهٍ',
                           style: TextStyle(
-
                             decoration: TextDecoration.none,
                             color: Colors.white,
                             fontSize: 17,
@@ -134,19 +133,18 @@ class _curvedBarState extends State<curvedBar> {
           child:Column(
             children: <Widget>[
               SizedBox(width: MediaQuery.of(context).size.width,height: 30,),
-              loading ? LinearProgressIndicator(backgroundColor: Theme.of(context).secondaryHeaderColor) :Container(),
+              // loading ? LinearProgressIndicator(backgroundColor: Theme.of(context).secondaryHeaderColor) :Container(),
               Container(
-                height:100,
+                height:80,
                 padding: EdgeInsetsDirectional.only(top: 5,end: 20,start: 20),
                 child: Image.asset('images/sympol.png',),
               ),
               Expanded(
                 child: ListView(
                   children:<Widget>[
-              Container(height: 10,),
               Container(
                 padding: EdgeInsets.only(left: 20,right: 20),
-                child:Text('من فضلك قم بإختيار الخدمه و أدخل رقم الوصل',style: TextStyle(fontSize: 18,color:Theme.of(context).accentColor),
+                child:Text('قم بإختيار الخدمه و أدخل رقم الوصل',style: TextStyle(fontSize: 18,color:Theme.of(context).accentColor),
                   textDirection: TextDirection.rtl,
                   textAlign: TextAlign.center,
                 ),
@@ -390,27 +388,33 @@ _passing() async{
          user = json.decode(reponse.body);
        
        }catch(e){
+         setState(() {
+           pressed = false;
+         });
          Toast.show('erreur du service', context,duration: 2,gravity:Toast.CENTER,backgroundColor: Colors.black);
        }
        setState(() {pressed=false;});
-        Navigator.pop(context);
-          print(user);
-            if(user.isNotEmpty) {
-             /* if(user[0]["noBody"]=="yes"){ user.clear(); _dialog();}
-              else */
-             if(user["recuId"]=="no" || user["ARid"]=="no"){
-                  user.clear(); _dialog();//Navigator.of(context).pushNamed('/AfterRecu', arguments: user);
-                  }else{
-               user["recu"]=recuController.text; print(user);
-               Navigator.of(context).pushNamed('/AfterRecu', arguments: user);
-             }
-            }else{
-              Toast.show('erreur du connection', context,duration: 2,gravity:Toast.CENTER,backgroundColor: Colors.black);
+       if(!goBack)
+           Navigator.pop(context,'success');
+        // Navigator.pushReplacement(context, new MaterialPageRoute(builder: (BuildContext context) => new curvedBar()));
+          print(user); print("user");
+          if(!goBack){
+                    if(user.isNotEmpty) {
+                    if(user["recuId"]=="no" || user["ARid"]=="no"){
+                          user.clear(); _dialog();//Navigator.of(context).pushNamed('/AfterRecu', arguments: user);
+                          }else{
+                      user["recu"]=recuController.text; print(user);
+                      Navigator.of(context).pushNamed('/AfterRecu', arguments: user);
+                    }
+                    }else{
+                      Toast.show('erreur du connection', context,duration: 2,gravity:Toast.CENTER,backgroundColor: Colors.black);
+                    }
             }
 
          }}
 
 _showIndecator(){
+         goBack = false;
          showGeneralDialog(
           barrierLabel: 'progress',
           barrierColor: Colors.white.withOpacity(0.4),
@@ -426,7 +430,13 @@ _showIndecator(){
                       ),
 
                  );
-         });}
+         }).then((val){
+           if(val != 'success'){goBack = true;
+            setState(() {pressed = false;});print("eeeeeeeeeee");
+                    }else
+                    print('success');
+           })
+         ;}
 _dialog() {
         showGeneralDialog(
           barrierColor: Colors.white.withOpacity(0.3),

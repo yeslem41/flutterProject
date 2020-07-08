@@ -19,7 +19,7 @@ class _AfterRecuState extends State<AfterRecu> {
      Map<String,dynamic> infoUser ;
      TextEditingController textController = TextEditingController();
      bool progress = false,snake=false;
-     String snakeSms='';
+     String snakeSms='',what='';
      GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   //   @override
   // void initState() {
@@ -34,7 +34,7 @@ class _AfterRecuState extends State<AfterRecu> {
     'https://miage2a2i.000webhostapp.com/inquiry_post.php',
     body:<String, String>{
       'body': textController.text,
-      'recu':infoUser[3],
+      'recu':infoUser["recu"],
     },
   );
   if(reponse.statusCode != 200)
@@ -60,6 +60,7 @@ class _AfterRecuState extends State<AfterRecu> {
   @override
   Widget build(BuildContext context) {
        infoUser = ModalRoute.of(context).settings.arguments;
+       infoUser['cheked']=='rembourser'?what='de ${infoUser['cheked']}':what='d\'${infoUser['cheked']}';
       //  switch (infoUser[2]['libelle']) {
       //    case 'saisie':
       //    case 'premier validation':
@@ -73,136 +74,184 @@ class _AfterRecuState extends State<AfterRecu> {
       //    default:
       //  }
       //  print(infoUser);
+      //  progress =false;
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title:Text(infoUser["cheked"]) ,
-        centerTitle: true,/*Row(
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Text('أستفسار')
-                  ],
-                ),
-                Row(
+      // appBar: AppBar(
+      //   backgroundColor: Theme.of(context).secondaryHeaderColor,
+      //   automaticallyImplyLeading: false,
+      //   title:Text(infoUser["cheked"]) ,
+      //   centerTitle: true,/*Row(
+      //         children: <Widget>[
+      //           Row(
+      //             children: <Widget>[
+      //               Text('أستفسار')
+      //             ],
+      //           ),
+      //           Row(
 
-                )
-              ],
-        )*/
-      ),
+      //           )
+      //         ],
+      //   )*/
+      // ),
       body:  SafeArea(
     
                  child: ListView(
                    scrollDirection: Axis.vertical,
                    children: <Widget>[
-                          progress ? LinearProgressIndicator():Container(),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            
-                              children:<Widget>[
-                                 Text(
-                                infoUser['cheked'],
+                      Container(
+                                   child:Row(
+                                   children: <Widget>[
+                                    FlatButton(
+                                    color: Colors.blue,
+                                    splashColor: Theme.of(context).secondaryHeaderColor,
+                                  // color: Colors.yellow,
+                                      child:Row(
+                                        children: <Widget>[
+                                          SizedBox(width: 1,),
+                                          Text('أستفسار',style: TextStyle(color: Theme.of(context).primaryColor,fontWeight: FontWeight.bold),),
+                                          Icon(Icons.create,size: 15,color:Theme.of(context).primaryColor,),
+                                        ],
+                                      ),
+                                      onPressed: _dilog,
+                                ),
+                     ] )),
+
+                          Container(
+                            margin: EdgeInsets.only(left:10,right:10,top: 15),
+                            decoration: BoxDecoration(
+                              borderRadius:BorderRadius.circular(25.0),
+                            color: Theme.of(context).primaryColor,
+                            ),
+                            height: 50,
+                            child:Center(
+                              child: Text('votre demande à propos '+what,
+                                style: TextStyle(color:Colors.white,),
                                 textAlign: TextAlign.end,
-                            ),
-                              ]
-                            ),
-                            Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            
-                              children:<Widget>[
-                                 Text(infoUser['cheked']+' matricule est :'+infoUser['ARid'] ,
-                                textAlign: TextAlign.end,
-                            ),
-                              ]
-                            ),
+                            ),)
+                          ),
+                   progress ?Container( 
+                     margin: EdgeInsets.only(left:10,right:10),
+                    
+                     child:LinearProgressIndicator(backgroundColor: Theme.of(context).secondaryHeaderColor)):Container(),
+                    Divider(height: 35,),
+                    Container(
+                      child: Center(child: Text('Reponse'),),
+                    ),
                      Padding(
-                       padding: EdgeInsets.only(left:10,right:10,top:35,),
-                                child: Text(
-                                            infoUser['libelle'],
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.black,
-                                        ),
-                                        ),
+                       padding: EdgeInsets.only(left:10,right:10),
+                                    child:Card(
+                                     elevation: 8.0,
+                                     shape: StadiumBorder(
+                                       side:BorderSide(
+                                         color: Theme.of(context).secondaryHeaderColor,
+                                         width: 2)
+                                     ),
+                                     child:Container(
+                                      //  padding: EdgeInsets.all(auto),
+                                       height: 50,
+                                              child: Center(
+                                                child: Text(
+                                                          infoUser['libelle'],
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          color: Colors.black,
+                                                      ),
+                                                      ),))),
                               ),
                               SizedBox(height:10),
                               Padding(
                                 padding:EdgeInsets.fromLTRB(15, 2, 15, 2),
                                 child: Table(
-                                    border: TableBorder.all(),
+                                    
+                                    border: TableBorder.all(color:Theme.of(context).primaryColor),
                                     children: [
                                       TableRow(
-                                        
+                                         decoration: BoxDecoration(
+                                           color:Colors.blue,
+                                         ),
                                           children:[
-                                                Text('recu',textAlign: TextAlign.center,),
+                                                Container(
+                                                  padding: EdgeInsets.only(top:2,bottom:2),
+                                                  child:Text('recu',textAlign: TextAlign.center,)),
                                                 
-                                                Text('matricule',textAlign: TextAlign.center,),
+                                                Container(
+                                                  padding: EdgeInsets.only(top:2,bottom:2),
+                                                  child:Text('matricule',textAlign: TextAlign.center,)),
                                                 if(infoUser['mntR']!=null)
-                                                  Text('Mnt remboursé',textAlign: TextAlign.center,),
+                                                Container(
+                                                  padding: EdgeInsets.only(top:2,bottom:2),
+                                                  child:Text('Mnt remboursé',textAlign: TextAlign.center,)),
                                           ] 
                                       ),
                                       TableRow(
+                                        
+                                        decoration: BoxDecoration(
+                                          
+                                        ),
                                           children:[
-                                                Text(infoUser["recu"],textAlign: TextAlign.center,),
+                                                Container(
+                                                  padding: EdgeInsets.only(top:5,bottom:5),
+                                                    child: Text(infoUser["recu"],textAlign: TextAlign.center,),
+                                                ),
                                                 
-                                                Text(infoUser['ARid'],textAlign: TextAlign.center,),
+                                                Container(
+                                                  padding: EdgeInsets.only(top:5,bottom:5),
+                                                  child:Text(infoUser['ARid'],textAlign: TextAlign.center,)
+                                                ),
                                                 if(infoUser['mntR']!=null)
-                                                 Text(infoUser['mntR'],textAlign : TextAlign.center,),
+                                                 Container(
+                                                  padding: EdgeInsets.only(top:5,bottom:5),
+                                                  child:Text(infoUser['mntR'],textAlign : TextAlign.center,),)
                                           ] 
                                       ),
                                     ],    
                                       )),
                               SizedBox(height: 35,),
-                               Column(
-                                      crossAxisAlignment : CrossAxisAlignment.end,
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: EdgeInsets.only(right:35,left:15),
-                                          child:Text('ستتمكن من إرسال أستفسار بعد أنتاه المد التي من المترض أن يعالج فيها ملفك أي بعد 7 أيام',
-                                            textAlign: TextAlign.end,
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 18),
-                                            ),)
-                                    ],) ,
+                              //  Column(
+                              //         crossAxisAlignment : CrossAxisAlignment.end,
+                              //         children: <Widget>[
+                              //           Padding(
+                              //             padding: EdgeInsets.only(right:35,left:15),
+                              //             child:Text('ستتمكن من إرسال أستفسار بعد أنتاه المد التي من المترض أن يعالج فيها ملفك أي بعد 7 أيام',
+                              //               textAlign: TextAlign.end,
+                              //               style: TextStyle(
+                              //                 color: Colors.black,
+                              //                 fontSize: 18,
+                              //                 ),
+                              //               ),)
+                              //       ],) ,
                                   
                         ],
                  ),
          ),
       
-         persistentFooterButtons: <Widget>[
-             Container(
-               width: MediaQuery.of(context).size.width,
-               //alignment: Alignment.bottomCenter,
-               child: Material(
-                 color: buttonColor,
-                 child: MaterialButton(
-                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                   child: Text(
-                     'إنشاء أستفسار',style: TextStyle(color: Colors.white,fontSize: 18),
-                   ),
-                    onPressed: _dilog,
-                  //(){
-                  //          _dilog;
-                       //  navigateToSubPage(context) ;
-                    //  Toast.show('msg', context,duration: 3);
-                      // setState((){buttonColor = Theme.of(context).accentColor;});
+      //    persistentFooterButtons: <Widget>[
+      //        Container(
+      //          width: MediaQuery.of(context).size.width,
+      //          //alignment: Alignment.bottomCenter,
+      //          child: Material(
+      //            color: buttonColor,
+      //            child: MaterialButton(
+      //              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      //              child: Text(
+      //                ' إنشاء أستفسار',style: TextStyle(color: Colors.white,fontSize: 18),
+      //              ),
+      //               onPressed: _dilog,
+      //             //(){
+      //             //          _dilog;
+      //                  //  navigateToSubPage(context) ;
+      //               //  Toast.show('msg', context,duration: 3);
+      //                 // setState((){buttonColor = Theme.of(context).accentColor;});
                       
-                    //  },
-                 ),
-               )
-             )
-      ],
-      bottomNavigationBar: BottomAppBar(
-        child: Container(
-          padding: EdgeInsets.only(bottom: 3),
-              child: Text("©Copyright Cnam 2020",style: TextStyle(color:Colors.black,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
-    
-        ),  
-      ),
+      //               //  },
+      //            ),
+      //          )
+      //        )
+      // ],
+      
 
     );
   }
@@ -235,7 +284,7 @@ void _dilog(){
                                       padding: EdgeInsets.only(top: 20,left: 15,right:35),
                                      child: TextField(
                                       controller: textController,  
-                                      textAlign: TextAlign.end,  
+                                      textAlign: TextAlign.start,  
                                       maxLines: 13,
                                       decoration: InputDecoration.collapsed(hintText: " أكتب أستفسارك هنا : تنبيه إلي أن أي إساءه يحاسب عليها"), 
                                       ),

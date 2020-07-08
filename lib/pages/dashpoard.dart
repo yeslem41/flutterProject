@@ -118,7 +118,7 @@ class _DashboardState extends State<Dashboard> {
                                             ),
                                           ),
                                         Padding(
-                                            padding: EdgeInsets.only(right: 45,bottom: 15,),
+                                            padding: EdgeInsets.only(right: 30,bottom: 15,),
                                             child:Container(
                                               margin: EdgeInsets.only(top:1),
                                               
@@ -178,10 +178,9 @@ class _DashboardState extends State<Dashboard> {
                                           ),
                                      
                                         Padding(
-                                            padding: EdgeInsets.only(right: 45,bottom: 15),
+                                            padding: EdgeInsets.only(right: 30,bottom: 15),
                                             child:Container(
-                                              decoration: BoxDecoration(
-                                            ),
+                                             
                                               width: 100,
                                               child:InkWell(
                                                 onTap: (){print('object4');},

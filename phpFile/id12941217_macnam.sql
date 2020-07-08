@@ -271,26 +271,51 @@ INSERT INTO `ref_remb_etat` (`id`, `libelle`) VALUES
 -- Structure de la table `table_lang`
 --
 
-CREATE TABLE `table_lang` (
-  `id` int(11) NOT NULL,
-  `frrembourser` text COLLATE utf8_unicode_ci NOT NULL,
-  `arrembourser` text COLLATE utf8_unicode_ci NOT NULL,
-  `araffiliation` text COLLATE utf8_unicode_ci NOT NULL,
-  `fraffiliation` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+-- CREATE TABLE `table_lang` (
+--   `id` int(11) NOT NULL ,
+--   `frrembourser` text COLLATE utf8_unicode_ci NOT NULL,
+--   `arrembourser` text COLLATE utf8_unicode_ci NOT NULL,
+--   `araffiliation` text COLLATE utf8_unicode_ci NOT NULL,
+--   `fraffiliation` text COLLATE utf8_unicode_ci NOT NULL
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `table_lang` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `processus` int(11) COLLATE utf8_unicode_ci NOT NULL,
+  `fkIdEtat` int(15) COLLATE utf8_unicode_ci NOT NULL,
+  `libelleAR` text COLLATE utf8_unicode_ci NOT NULL,
+  `libelleFR` text COLLATE utf8_unicode_ci NOT NULL
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 --
 -- Déchargement des données de la table `table_lang`
 --
 
-INSERT INTO `table_lang` (`id`, `frrembourser`, `arrembourser`, `araffiliation`, `fraffiliation`) VALUES
-(1, 'En cours du traitement', ' ملفك قيد المعالجه', 'ملفك قيد المعالجه', 'En cours du traitement'),
-(2, 'En cours du traitement', ' ملفك قيد المعالجه', 'ملفك قيد المعالجه', 'En cours du traitement'),
-(3, 'En cours du traitement', ' ملفك قيد المعالجه', 'تهانينا لك بطاقتك جاهزة', 'félicitation votre carte est prete'),
-(4, 'En cours du paiement', 'قيد الدفع', '', ''),
-(7, 'En cours du paiement', 'قيد الدفع', '', ''),
+INSERT INTO `table_lang` ( `processus`,`fkIdEtat`, `libelleFR`, `libelleAR`) VALUES
+(0, 0,'Votre dossier est en attente du traitement', 'ملفك في انتظار المعالجة')
+(1, 1,'En cours du traitement', 'ملفك قيد المعالجه'),
+(1, 2,'En cours du traitement', 'ملفك قيد المعالجه'),
+(1, 3,'En cours du traitement', ' ملفك قيد المعالجه'),
+(1, 4,'En cours du paiement', 'قيد الدفع' ),
+(1, 7,'En cours du paiement', 'قيد الدفع' ),
+(2,1,'En cours du traitement','ملفك قيد المعالجه'),
+(2,2,'En cours du traitement','ملفك قيد المعالجه'),
+(2,3,'félicitation votre carte est prete','تهانينا لك بطاقتك جاهزة'),
+(2,12,'En cours du traitement','ملفك قيد المعالجه');
+
 (21, 'Votre dossier est en attente du traitement', 'ملفك في انتظار المعالجة', 'ملفك في انتظار المعالجة', 'Votre dossier est en attente du traitement'),
 (12, '', '', 'ملفك قيد المعالجه', 'En cours du traitement');
+
+
+
+-- INSERT INTO `table_lang` ( `processus`,`fkIdEtat`, `libelleAR`, `libelleFR`) VALUES
+-- (1, 'En cours du traitement', ' ملفك قيد المعالجه', 'ملفك قيد المعالجه ', 'En cours du traitement'),
+-- (1, 'En cours du traitement', ' ملفك قيد المعالجه', 'ملفك قيد المعالجه', 'En cours du traitement'),
+-- (1, 'En cours du traitement', ' ملفك قيد المعالجه', 'تهانينا لك بطاقتك جاهزة', 'félicitation votre carte est prete'),
+-- (1, 'En cours du paiement', 'قيد الدفع', '', ''),
+-- (1, 'En cours du paiement', 'قيد الدفع', '', ''),
+
+-- (21, 'Votre dossier est en attente du traitement', 'ملفك في انتظار المعالجة', 'ملفك في انتظار المعالجة', 'Votre dossier est en attente du traitement'),
+-- (12, '', '', 'ملفك قيد المعالجه', 'En cours du traitement');
 
 --
 -- Index pour les tables déchargées
