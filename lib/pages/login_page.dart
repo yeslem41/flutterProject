@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttercnam/locale/locales.dart';
 import 'package:fluttercnam/pages/dashpoard.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart'as http;
@@ -68,6 +69,7 @@ class _LoginPageState extends State<LoginPage>{
 
     @override
   Widget build(BuildContext context) {
+    Locale myLocale = Localizations.localeOf(context);print(myLocale.languageCode);
       //if (LoginPage.isLogin)
        // return Pageprincipale();
         final password = TextFormField(
@@ -104,7 +106,7 @@ class _LoginPageState extends State<LoginPage>{
         );
 
         return Scaffold(
-            appBar: AppBar(title: Text('Macnam'), centerTitle: true,),
+            appBar: AppBar(title: Text(AppLocalization.of(context).AppName), centerTitle: true,),
             body: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
               child: SafeArea(
@@ -175,7 +177,7 @@ class _LoginPageState extends State<LoginPage>{
             child: Container(
                padding:EdgeInsets.only(right: 10,left: 10,top: 5) ,
               margin: EdgeInsets.only(top:30),
-              height: 300,
+              height: 350,
               width: MediaQuery.of(context).size.width - MediaQuery.of(context).size.width/6,
               decoration: BoxDecoration(
                  color: Theme.of(context).secondaryHeaderColor,
@@ -193,10 +195,10 @@ class _LoginPageState extends State<LoginPage>{
                   Divider(height: 15,),
                   Container(height: 25,),
                   Container(
-                    padding: EdgeInsets.only(right: 15),
-                    alignment: Alignment.bottomRight,
+                    // padding: EdgeInsets.only(right: 15),
+                    // alignment: Alignment.bottomRight,
                      child:FlatButton(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                    // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                     color: Theme.of(context).primaryColor,
                          child:Text('OK',style: TextStyle(color:Colors.white),),
                     onPressed: (){

@@ -1,6 +1,5 @@
 //import 'dart:io';
 import 'package:fluttercnam/pages/AfterRecu.dart';
-import 'package:fluttercnam/pages/PagePrincipale.dart';
 import 'package:fluttercnam/pages/curvedBar.dart';
 
 //import 'package:splashscreen/splashscreen.dart';
@@ -11,7 +10,9 @@ import 'package:fluttercnam/pages/dashpoard.dart';
 import 'package:fluttercnam/pages/login_page.dart';
 import 'package:fluttercnam/pages/reclamation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fluttercnam/locale/locales.dart';
+ 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences login = await SharedPreferences.getInstance();
@@ -27,6 +28,15 @@ class MyApp extends StatelessWidget{
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'MACNAMI',
+      localizationsDelegates: [
+        AppLocalizationDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
+      supportedLocales: [
+        Locale('fr',''),
+        Locale('ar','')
+      ],
       theme: ThemeData(
         primarySwatch: MaterialColor(0XFF2e3a8a, {
           50: Color.fromRGBO(18, 23, 54, 0.1),

@@ -1,0 +1,15 @@
+{
+    "@@last_modified": "2020-07-13T22:30:22.411807",
+    "AppName": "app name fr",
+    "@AppName": {
+      "description": "the name of our app it is pretty",
+      "type": "text",
+      "placeholders": {}
+    },
+    "welcome": "app's welcome fr",
+    "@welcome": {
+      "description": "the app's welcome message it is also pretty",
+      "type": "text",
+      "placeholders": {}
+    }
+  }

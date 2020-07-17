@@ -212,8 +212,9 @@ class _DashboardState extends State<Dashboard> {
     
      bottomNavigationBar: Container(
           color:Theme.of(context).secondaryHeaderColor,
-          height: 15,
+          height: 30,
              child:Center(
+               
                child:Text('copy right cnam 2020',style: TextStyle(color:Colors.black),)
      )
      ),

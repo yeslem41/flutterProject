@@ -160,7 +160,7 @@ class _curvedBarState extends State<curvedBar> {
                 ),
                 child:Row(
                   textBaseline: TextBaseline.alphabetic,
-                  textDirection: TextDirection.rtl,
+                  // textDirection: TextDirection.rtl,
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.only(right: 30),
@@ -188,7 +188,7 @@ class _curvedBarState extends State<curvedBar> {
                    ),
                 child:Row(
                   textBaseline: TextBaseline.alphabetic,
-                  textDirection: TextDirection.rtl,
+                  // textDirection: TextDirection.rtl,
                   children: <Widget>[
                     Padding(
 
@@ -450,7 +450,7 @@ _dialog() {
                 child: Container(
                   padding:EdgeInsets.only(right: 10,left: 10,top: 5) ,
                   margin: EdgeInsets.only(top:100),
-                  height: 200,
+                  height: 230,
                    width: MediaQuery.of(context).size.width - MediaQuery.of(context).size.width/6,
                   decoration: BoxDecoration(
                        color: Theme.of(context).secondaryHeaderColor,
