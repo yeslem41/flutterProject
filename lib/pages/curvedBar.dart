@@ -1,13 +1,11 @@
 import 'dart:convert';
-import 'dart:ui' as ui;
-import 'dart:io' show Platform;
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:fluttercnam/locale/locales.dart';
 import 'package:http/http.dart'as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
-import 'package:fluttercnam/pages/login_page.dart';
 // import 'package:flutter_localizations/flutter_localizations.dart';
 
 class curvedBar extends StatefulWidget {
@@ -18,24 +16,22 @@ class curvedBar extends StatefulWidget {
 class _curvedBarState extends State<curvedBar> {
     PageController _controller = PageController(initialPage: 0);
     GlobalKey _curvedBar = GlobalKey();
-    int _page = 1;
+    int _page = 0;
     Color buttonBackColor ;
     //principale
     var recuController =  TextEditingController();
       String checkedInput = '',_sysLng;
       bool loading = false;
-      List logeouts=[];
+      // List logeouts=[];
       Map<String,dynamic> user;
       var formKey = GlobalKey <FormState>();
-      bool pressed = false,goBack=false;
+      bool pressed = false,goBack=false,frlang;
        SharedPreferences use ;
     @override
   void initState() {
     // TODO: implement initState
     super.initState();
     init();
-      // Locale myLocale = Localizations.localeOf(context);
-      // String lc = currentLanguageCode(myLocale);
   }
   init()async{
     use = await SharedPreferences.getInstance();
@@ -50,20 +46,23 @@ class _curvedBarState extends State<curvedBar> {
 
   @override
   Widget build(BuildContext context) {
-      // print("language");
-      // print(_sysLng); print("language");
+        String myLo = Localizations.localeOf(context).languageCode;
+        if(myLo == 'fr')
+              frlang = true;
+        else  
+              frlang = false;      
     return Scaffold(
               bottomNavigationBar: CurvedNavigationBar(
                 key: _curvedBar,
-                index: 1,
+                index: 0,
                 height: 60,
                 buttonBackgroundColor: Theme.of(context).accentColor,
                 backgroundColor:buttonBackColor,
                color:Theme.of(context).secondaryHeaderColor,
                 items: <Widget>[
-                  Icon(Icons.help_outline,size: 30,),
                   Icon(Icons.home,size: 30,),
-                  Icon(Icons.exit_to_app,size: 30,),
+                  Icon(Icons.help_outline,size: 30,),
+                  // Icon(Icons.exit_to_app,size: 30,),
                   
                 ],
                 onTap: (index){
@@ -79,9 +78,8 @@ class _curvedBarState extends State<curvedBar> {
     );
   }
   Widget _pageView(int index){
-
         switch(index){
-          case 0 :{
+          case 1 :{
             return SafeArea(
              child: Align(
              alignment: Alignment.topCenter,
@@ -127,7 +125,7 @@ class _curvedBarState extends State<curvedBar> {
           } 
           break;
 
-          case 1 : {
+          case 0 : {
             return GestureDetector(
           onTap: ()=>FocusScope.of(context).unfocus(),
           child:Column(
@@ -144,7 +142,7 @@ class _curvedBarState extends State<curvedBar> {
                   children:<Widget>[
               Container(
                 padding: EdgeInsets.only(left: 20,right: 20),
-                child:Text('قم بإختيار الخدمه و أدخل رقم الوصل',style: TextStyle(fontSize: 18,color:Theme.of(context).accentColor),
+                child:Text(AppLocalization.of(context).choisir,style: TextStyle(fontSize: 18,color:Theme.of(context).accentColor),
                   textDirection: TextDirection.rtl,
                   textAlign: TextAlign.center,
                 ),
@@ -163,7 +161,7 @@ class _curvedBarState extends State<curvedBar> {
                   // textDirection: TextDirection.rtl,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(right: 30),
+                      padding:frlang ? EdgeInsets.only(left: 20) : EdgeInsets.only(right: 20),
                       child:Radio(
                         value: 'affiliation',
                         groupValue: checkedInput,
@@ -174,7 +172,7 @@ class _curvedBarState extends State<curvedBar> {
 
                       ),
                     ),
-                    Text('متابعة الملف',style: TextStyle(fontSize: 18,color: Colors.black),)
+                    Text(AppLocalization.of(context).choiDossier,style: TextStyle(fontSize: 18,color: Colors.black),)
                   ],
                 ),
               ),
@@ -192,7 +190,7 @@ class _curvedBarState extends State<curvedBar> {
                   children: <Widget>[
                     Padding(
 
-                      padding: EdgeInsets.only(right: 30),
+                      padding: frlang ? EdgeInsets.only(left: 20) : EdgeInsets.only(right: 20),
                       child:Radio(
                         value: 'rembourser',
                         groupValue: checkedInput,
@@ -202,7 +200,7 @@ class _curvedBarState extends State<curvedBar> {
                         autofocus: true,
                       ),
                     ),
-                    Text('متابعة االتسديد',style: TextStyle(fontSize: 18,color: Colors.black),)
+                    Text(AppLocalization.of(context).choiRecla,style: TextStyle(fontSize: 18,color: Colors.black),)
                   ],
                 ),
               ),
@@ -226,13 +224,13 @@ class _curvedBarState extends State<curvedBar> {
                     maxLength: 14,
                    // keyboardType : TextInputType.number,
                     textInputAction: TextInputAction.done,
-                    validator: (val)=> val.length ==0 ? "ادخل رقم وصلك" : (val.length <5 ? "رقم الوصل غير صحيح" : null),
+                    validator: (val)=> val.length ==0 ? AppLocalization.of(context).hintRecu : (val.length <5 ? AppLocalization.of(context).hintRecuFalse : null),
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
                       contentPadding: EdgeInsets.only(right: 25,left: 25),
-                      labelText:'ادخل رقم وصلك',
-                      labelStyle: TextStyle(fontSize: 20,fontWeight: FontWeight.w400,color: Colors.black),
+                      labelText:AppLocalization.of(context).hintRecu,
+                      labelStyle: TextStyle(fontSize: 20,fontWeight: FontWeight.w100,color: Colors.black.withOpacity(0.6)),
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(35),),
                     ),
                   ))),
@@ -248,7 +246,7 @@ class _curvedBarState extends State<curvedBar> {
                     minWidth: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     onPressed:!pressed?_passing:null,
-                    child: Text('التالي',textDirection: TextDirection.rtl,
+                    child: Text(AppLocalization.of(context).suiviButton,textDirection: TextDirection.rtl,
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.white),
 
@@ -262,56 +260,6 @@ class _curvedBarState extends State<curvedBar> {
                 ],
           ),
         );
-          }
-          break;
-          case 2 : {
-            
-            return  SafeArea(
-                     child: Container(
-                              height: MediaQuery.of(context).size.height,
-                                width: MediaQuery.of(context).size.width,
-                                color:Theme.of(context).primaryColor.withOpacity(0.8),
-                                   child:Padding( 
-                                         padding: EdgeInsets.only(top:55,left: 40,right:40),
-                                          child:Center(  
-                                                  child:Column(
-                                                      children:<Widget> [
-                                                        Text('أهل بك! نتمني أنتكون مرتاحا مع إستخدام ماكنامي',textAlign: TextAlign.end,),
-                                                        Divider(color:Theme.of(context).primaryColor ,),
-                                                        Text(
-                                                            use.getString("recu")
-                                                        ),
-                                                        RichText(textAlign:TextAlign.end,
-                                                          text: TextSpan(
-                                                           style: TextStyle(
-                                                             color: Colors.black,
-                                                           ),
-                                                            children: <TextSpan>[
-                                                             TextSpan(text: 'تنبيه: ',style: TextStyle(color:Colors.red,fontSize: 20)),
-                                                             TextSpan(
-                                                               text:'إذاقمة بتسجيل الخروج ستحذف كل معلومات لدخول المره القادمه'
-                                                             )
-                                                            ]
-                                                          ),
-                                                        ),
-                                                        SizedBox(height:25),
-                                                        Material(
-                                                          elevation: 5.0,
-                                                          borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                                                          color: Colors.red,
-                                                          child: MaterialButton(
-                                                            
-                                                            padding: EdgeInsets.fromLTRB(40,0,40,0,),
-                                                            onPressed: _logoutConfirmed,
-                                                            child: Text(
-                                                              'logout'
-                                                            ),),)
-
-                                                      ]
-                                                    )
-                                                      ))
-                                ),
-                      );
           }
           break;
           default: {
@@ -332,42 +280,11 @@ class _curvedBarState extends State<curvedBar> {
 
 
 
-_logoutConfirmed() async{
-             _showIndecator();
- var  url='https://miage2a2i.000webhostapp.com/index_cnam.php?logeout=yes&recunni='+use.getString("recu");
-  try{
-      http.Response response = await http.get(url);
-      if(response.statusCode != 200)
-             throw 'errer of server';
-       logeouts = json.decode(response.body); 
-       print(logeouts);
-       }catch(e){
-         print(e);
-       }
-       if(logeouts.isEmpty){
-             Navigator.pop(context);
-             Toast.show('errer de connection', context,duration: 2,gravity: Toast.CENTER);
-       }else{print(logeouts[0]["logeout"]);
-         if(logeouts[0]["logeout"] == "true"){
-                    print('logeout true');
-                    use.remove("login");
-                     use.remove("recu");
-                     Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context)=>LoginPage(),
-                                  ),
-                                  (Route<dynamic> route)=>false);
-          }else 
-                   print('logeout false');        
-       }   
-}
-
 //functions of home page
 _passing() async{
   print(user);
   user?.clear();print(user);
-  _sysLng = ui.window.locale.languageCode; 
+  _sysLng = Localizations.localeOf(context).languageCode; 
   FocusScope.of(context).unfocus();
       //  user.clear();
       if(formKey.currentState.validate()){
@@ -459,21 +376,21 @@ _dialog() {
               children: <Widget>[
 
               Container(height: 10,),
-              Text('Vérifiez votre reçu et réessayez. ',
+              Text(AppLocalization.of(context).alertNotRecu,
               style: TextStyle(fontSize: 16,decoration: TextDecoration.none),textAlign: TextAlign.start,),
               Divider(height: 5,color: Theme.of(context).primaryColor,),
               Container(height: 15,),
-              Text('Nous vous aidions autant que possible',
+              Text(AppLocalization.of(context).alertNotrecu10,
                 style: TextStyle(fontSize: 16,decoration: TextDecoration.none),textAlign: TextAlign.start,),
               Divider(height: 15,color: Theme.of(context).primaryColor,),
               Container(height: 25,),
               Container(
-              padding: EdgeInsets.only(right: 15),
-              alignment: Alignment.bottomRight,
+              padding: frlang ? EdgeInsets.only(right: 15) : EdgeInsets.only(left: 15),
+              alignment: frlang ? Alignment.bottomRight : Alignment.bottomLeft,
               child:FlatButton(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
               color: Theme.of(context).primaryColor,
-              child:Text('OK',style: TextStyle(color:Colors.white),),
+              child:Text(AppLocalization.of(context).alertNotRecuOk,style: TextStyle(color:Colors.white),),
               onPressed: (){
               Navigator.of(context).pop();
               },)
@@ -500,33 +417,21 @@ _dialog() {
 //change colors of backgroundButtonIcon in curvedBar
 Color colorResponsible(int index){
        switch (index) {
-         case 0:{
+         case 1:{
               return Theme.of(context).primaryColor;
            }
            break;
-           case 1:{
+           case 0:{
               return Colors.white;
            }
            break;
-           case 2:{
-              return Theme.of(context).primaryColor.withOpacity(0.8);
-           }
-           break;
+          //  case 2:{
+          //     return Theme.of(context).primaryColor.withOpacity(0.8);
+          //  }
+          //  break;
          default:{
          return Colors.white;
          }
        }
 }
 }
-
-
-  //         Case 0:
-  //          return SafeArea(
-  //            child: Center(child:Text('i am safearea 1 !'))
-  //            );
-  //       }else{
-  //          return SafeArea(
-  //            child: Center(child:Text('i am safearea 2 !'))
-  //            );
-  //       }
-  // }

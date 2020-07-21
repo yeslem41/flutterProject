@@ -80,6 +80,10 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:
+  fonts:
+    - family: Al-Jazeera-Arabic
+      fonts:
+        - asset: fontAssets/Al-Jazeera-Arabic-Regular.ttf
   #   - family: Dancing_Script
   #     fonts:
   #       - asset: fontAssets/Dancing_Script/DancingScript-Regular.ttf

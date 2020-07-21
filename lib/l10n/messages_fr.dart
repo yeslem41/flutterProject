@@ -21,7 +21,30 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
-    "AppName" : MessageLookupByLibrary.simpleMessage("Macnami fr"),
-    "welcome" : MessageLookupByLibrary.simpleMessage("app\'s welcome fr")
+    "AppName" : MessageLookupByLibrary.simpleMessage("Macnami"),
+    "welcome" : MessageLookupByLibrary.simpleMessage("Bienvenue chez Macnami Service, votre satisfaction est notre objectif, venez vous connecter"),
+    "loginLabelText" : MessageLookupByLibrary.simpleMessage("veuillez entrer votre nni ou icam"),
+    "loginConnect":MessageLookupByLibrary.simpleMessage("Se connectez"),
+    "suivi":MessageLookupByLibrary.simpleMessage("Suivi des dossier"),
+    "gerstionRecla":MessageLookupByLibrary.simpleMessage("gestion de réclamation"),
+    "fragment":MessageLookupByLibrary.simpleMessage("fragment"),
+    "deconnecter":MessageLookupByLibrary.simpleMessage("Déconnecté"),
+    "choisir":MessageLookupByLibrary.simpleMessage("veuillez choisir un service et entrez vorte recu"),
+    "choiDossier":MessageLookupByLibrary.simpleMessage("affiliation"),
+    "choiRecla":MessageLookupByLibrary.simpleMessage("reclamation"),
+    "hintRecu":MessageLookupByLibrary.simpleMessage("entrez votre recu"),
+    "hintRecuFalse":MessageLookupByLibrary.simpleMessage("vtre recu est fausse"),
+    "suiviButton":MessageLookupByLibrary.simpleMessage("suivant"),
+    "demandeInfos":MessageLookupByLibrary.simpleMessage("Reclamer"),
+    "demandePropos":MessageLookupByLibrary.simpleMessage("Votre demande à propos "),
+    "reponse":MessageLookupByLibrary.simpleMessage("Reponse"),
+    "matricule":MessageLookupByLibrary.simpleMessage("matricule"),
+    "recu":MessageLookupByLibrary.simpleMessage("recu"),
+    "rembourser":MessageLookupByLibrary.simpleMessage("rembourser"),
+    "alertNotRecu":MessageLookupByLibrary.simpleMessage("Vérifiez votre reçu et réssayez."),
+    "alertNotInam":MessageLookupByLibrary.simpleMessage("Vérifiez votre inam ou nni et réssayez."),
+    "alertNotrecu10":MessageLookupByLibrary.simpleMessage("votre dossier introuvable ou errouné!"),
+    "alertNotRecuOk":MessageLookupByLibrary.simpleMessage("OK"),
+    "hitLoginNotCorrect":MessageLookupByLibrary.simpleMessage("nni ou inam incorrecte"),
   };
 }

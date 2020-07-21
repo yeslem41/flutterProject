@@ -69,20 +69,17 @@ class _LoginPageState extends State<LoginPage>{
 
     @override
   Widget build(BuildContext context) {
-    Locale myLocale = Localizations.localeOf(context);print(myLocale.languageCode);
-      //if (LoginPage.isLogin)
-       // return Pageprincipale();
         final password = TextFormField(
           controller: myController,
           textAlign: TextAlign.center,
           obscureText: false,
-          validator: (val) =>val.length == 0 ? "entre votre nni ou inam" :null,
+          validator: (val) =>val.length == 0 ? AppLocalization.of(context).loginLabelText :val.length<=6 ? AppLocalization.of(context).hitLoginNotCorrect : null,
           decoration: InputDecoration(
             filled: true,
             fillColor: Colors.white,
             contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-            labelText: 'entre votre nni ou inam',
-            labelStyle: TextStyle(color: Colors.black,),
+            labelText: AppLocalization.of(context).loginLabelText,
+            labelStyle: TextStyle(color: Colors.black.withOpacity(0.6),),
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(25.0)),
           ),
@@ -97,7 +94,7 @@ class _LoginPageState extends State<LoginPage>{
             minWidth: MediaQuery.of(context).size.width,
             padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
             onPressed: !loading ? _passing : () => {},
-            child: Text('accéder',
+            child: Text(AppLocalization.of(context).loginConnect,
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white),
 
@@ -129,10 +126,9 @@ class _LoginPageState extends State<LoginPage>{
                         children: <Widget>[
                           SizedBox(height: MediaQuery.of(context).size.height/18,),
 //                      emailField,
-                          Text(
-                            ' مرحبا بكم فى خدمة ماك نام مرحبا بكم فى خدمة ماك نام مرحبا بكم فى خدمة ماك ناممرحبا بكم فى خدمة ماك نام',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 18),),
+                          Text(AppLocalization.of(context).welcome,
+                          textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 16),),
                           SizedBox(height: MediaQuery.of(context).size.height/18,),
                           Form(
                               key: formKey,
@@ -177,20 +173,19 @@ class _LoginPageState extends State<LoginPage>{
             child: Container(
                padding:EdgeInsets.only(right: 10,left: 10,top: 5) ,
               margin: EdgeInsets.only(top:30),
-              height: 350,
+              height: 250,
               width: MediaQuery.of(context).size.width - MediaQuery.of(context).size.width/6,
               decoration: BoxDecoration(
                  color: Theme.of(context).secondaryHeaderColor,
                   borderRadius: BorderRadius.circular(25.0)),
               child: Column(
                 children: <Widget>[
-                  Text('SALUT ',style: TextStyle(fontSize: 25,decoration: TextDecoration.none),  ),
-                  Divider(),
-                  Text('vorte dossier est hors du traitement ou vous avez saisi un faux NIN ou matricule',
+                  SizedBox(height: 20,),
+                  Text(AppLocalization.of(context).alertNotrecu10,
                     style: TextStyle(fontSize: 16,decoration: TextDecoration.none),textAlign: TextAlign.center,),
                   Divider(height: 15,),
                   Container(height: 30,),
-                  Text('Si vous etes sur que vous avez un cnam count re-saisir ton NIN ou ton matricule',style: TextStyle(fontSize: 16,decoration: TextDecoration.none),
+                  Text(AppLocalization.of(context).alertNotInam,style: TextStyle(fontSize: 16,decoration: TextDecoration.none),
                     textAlign: TextAlign.center,),
                   Divider(height: 15,),
                   Container(height: 25,),
@@ -200,7 +195,7 @@ class _LoginPageState extends State<LoginPage>{
                      child:FlatButton(
                     // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                     color: Theme.of(context).primaryColor,
-                         child:Text('OK',style: TextStyle(color:Colors.white),),
+                         child:Text(AppLocalization.of(context).alertNotRecuOk,style: TextStyle(color:Colors.white),),
                     onPressed: (){
                       Navigator.of(context).pop();
                     },)
@@ -225,35 +220,5 @@ class _LoginPageState extends State<LoginPage>{
 
   }
 }
-/*
-showDialog(
-barrierDismissible: true,
-context: context,
-builder:(_){
-return AlertDialog(
 
-elevation: 23.0,
-contentPadding: EdgeInsets.only(top: 10,),
-titlePadding: EdgeInsets.only(top: 5,),
-backgroundColor: Theme.of(context).secondaryHeaderColor,
-title: Text('salut notre client',textAlign: TextAlign.center,),
-content: Text('votre dossier est hors du traitment votre dossier est hors du traitment votre dossier est hors du traitment votre dossier est hors du traitment ',textAlign: TextAlign.center,),
-actions: <Widget>[
-FlatButton(
-child: Text('OK'),
-onPressed: ()=>{},
-)
-],
-);
-}
-
-);
-/////
-if(myController.text.trim().isEmpty || 10 != myController.text.trim().length) {
-          if( myController.text.isEmpty)
-            Toast.show('أدخل رقمك الوطن ', context, duration: 3, gravity: Toast.BOTTOM);
-          else
-            Toast.show('رق غير صحيح اعد إدخاله', context, duration: 3, gravity: Toast.BOTTOM);
-        }
-*/
 

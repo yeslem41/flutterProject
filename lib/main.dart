@@ -7,8 +7,10 @@ import 'package:fluttercnam/pages/curvedBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttercnam/pages/dashpoard.dart';
+import 'package:fluttercnam/pages/deconnect.dart';
 import 'package:fluttercnam/pages/login_page.dart';
 import 'package:fluttercnam/pages/reclamation.dart';
+import 'package:fluttercnam/pages/deconnect.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fluttercnam/locale/locales.dart';
@@ -38,6 +40,7 @@ class MyApp extends StatelessWidget{
         Locale('ar','')
       ],
       theme: ThemeData(
+        fontFamily: 'Al-Jazeera-Arabic',
         primarySwatch: MaterialColor(0XFF2e3a8a, {
           50: Color.fromRGBO(18, 23, 54, 0.1),
           100: Color.fromRGBO(18, 23, 54, 0.2),
@@ -83,6 +86,7 @@ class MyApp extends StatelessWidget{
         '/AfterRecu':(_)=>AfterRecu(),
         '/LoginPage':(_)=>LoginPage(),
         '/Reclammation':(_)=>Reclammation(),
+        '/deconnected':(_)=>Deconnect()
       }
     );
   }
@@ -122,16 +126,7 @@ class _SplashState extends State<Splash> {
               ))
           
     );
-    /*Scaffold(
-      body:Center(
-           child: Image(
-             width: 100,
-             height: 100,
-             image: AssetImage('images/sympol.png'),
-           ),
-        ),
-
-    );*/
+    
   }
 }
 

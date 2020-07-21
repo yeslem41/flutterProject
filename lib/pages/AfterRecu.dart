@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttercnam/locale/locales.dart';
 import 'package:http/http.dart';
 import 'package:toast/toast.dart';
 // import 'package:flushbar/flushbar.dart';
@@ -60,41 +61,14 @@ class _AfterRecuState extends State<AfterRecu> {
   @override
   Widget build(BuildContext context) {
        infoUser = ModalRoute.of(context).settings.arguments;
-       infoUser['cheked']=='rembourser'?what='de ${infoUser['cheked']}':what='d\'${infoUser['cheked']}';
-      //  switch (infoUser[2]['libelle']) {
-      //    case 'saisie':
-      //    case 'premier validation':
-      //    case 'deuxieme validation':
-      //     setState(() { sms = 'En cours de traitement';});break;
-      //    case 'en attente de paiment':  
-      //    case 'en attente de validation bordereau': 
-      //     setState(() { sms = 'En cours de paiement';});break;
-      //    case 'hors du traitement':
-      //        setState(() {sms = 'votre dossier est en attente de traitement';}); break;
-      //    default:
-      //  }
-      //  print(infoUser);
-      //  progress =false;
+       if(Localizations.localeOf(context).languageCode == 'fr')
+              infoUser['cheked']=='rembourser'?what='de ${infoUser['cheked']}':what='d\'${infoUser['cheked']}';
+       else
+             infoUser['cheked']=='rembourser'?what='إعادة مال':what='الانتماء'; 
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   backgroundColor: Theme.of(context).secondaryHeaderColor,
-      //   automaticallyImplyLeading: false,
-      //   title:Text(infoUser["cheked"]) ,
-      //   centerTitle: true,/*Row(
-      //         children: <Widget>[
-      //           Row(
-      //             children: <Widget>[
-      //               Text('أستفسار')
-      //             ],
-      //           ),
-      //           Row(
-
-      //           )
-      //         ],
-      //   )*/
-      // ),
+      
       body:  SafeArea(
     
                  child: ListView(
@@ -110,7 +84,7 @@ class _AfterRecuState extends State<AfterRecu> {
                                       child:Row(
                                         children: <Widget>[
                                           SizedBox(width: 1,),
-                                          Text('أستفسار',style: TextStyle(color: Theme.of(context).primaryColor,fontWeight: FontWeight.bold),),
+                                          Text(AppLocalization.of(context).demandeInfos,style: TextStyle(color: Theme.of(context).primaryColor,fontWeight: FontWeight.bold),),
                                           Icon(Icons.create,size: 15,color:Theme.of(context).primaryColor,),
                                         ],
                                       ),
@@ -126,7 +100,7 @@ class _AfterRecuState extends State<AfterRecu> {
                             ),
                             height: 50,
                             child:Center(
-                              child: Text('votre demande à propos '+what,
+                              child: Text(AppLocalization.of(context).demandePropos+what,
                                 style: TextStyle(color:Colors.white,),
                                 textAlign: TextAlign.end,
                             ),)
@@ -137,7 +111,7 @@ class _AfterRecuState extends State<AfterRecu> {
                      child:LinearProgressIndicator(backgroundColor: Theme.of(context).secondaryHeaderColor)):Container(),
                     Divider(height: 35,),
                     Container(
-                      child: Center(child: Text('Reponse'),),
+                      child: Center(child: Text(AppLocalization.of(context).reponse),),
                     ),
                      Padding(
                        padding: EdgeInsets.only(left:10,right:10),
@@ -175,15 +149,15 @@ class _AfterRecuState extends State<AfterRecu> {
                                           children:[
                                                 Container(
                                                   padding: EdgeInsets.only(top:2,bottom:2),
-                                                  child:Text('recu',textAlign: TextAlign.center,)),
+                                                  child:Text(AppLocalization.of(context).recu,textAlign: TextAlign.center,)),
                                                 
                                                 Container(
                                                   padding: EdgeInsets.only(top:2,bottom:2),
-                                                  child:Text('matricule',textAlign: TextAlign.center,)),
+                                                  child:Text(AppLocalization.of(context).matricule,textAlign: TextAlign.center,)),
                                                 if(infoUser['mntR']!=null)
                                                 Container(
                                                   padding: EdgeInsets.only(top:2,bottom:2),
-                                                  child:Text('Mnt remboursé',textAlign: TextAlign.center,)),
+                                                  child:Text(AppLocalization.of(context).rembourser,textAlign: TextAlign.center,)),
                                           ] 
                                       ),
                                       TableRow(

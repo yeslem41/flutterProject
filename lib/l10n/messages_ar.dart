@@ -21,7 +21,30 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
-    "AppName" : MessageLookupByLibrary.simpleMessage("Macnami arab"),
-    "welcome" : MessageLookupByLibrary.simpleMessage("app\'s welcome arb")
+    "AppName" : MessageLookupByLibrary.simpleMessage("ماكنامي"),
+    "welcome" : MessageLookupByLibrary.simpleMessage("مرحبا بكم معنا في خدمة ماكنامي, رضاكم هدفنا رجاء قم بتسجيل الدخول"),
+    "loginLabelText" : MessageLookupByLibrary.simpleMessage("الرجاء إدخال nni أو icam الخاص بك"),
+    "loginConnect":MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
+    "suivi":MessageLookupByLibrary.simpleMessage("متابعة الملفات"),
+    "gerstionRecla":MessageLookupByLibrary.simpleMessage("إدارة الشكاوي"),
+    "fragment":MessageLookupByLibrary.simpleMessage("نبذة"),
+    "deconnecter":MessageLookupByLibrary.simpleMessage("الخروج"),
+    "choisir":MessageLookupByLibrary.simpleMessage("رجاء أختر خدمة و أدخل رقم وصلك"),
+    "choiDossier":MessageLookupByLibrary.simpleMessage("الانتماء"),
+    "choiRecla":MessageLookupByLibrary.simpleMessage("إعادة المال"),
+    "hintRecu":MessageLookupByLibrary.simpleMessage("أدخل رقم وصك"),
+    "hintRecuFalse":MessageLookupByLibrary.simpleMessage("رقم الوصل غير صحيح"),
+    "suiviButton":MessageLookupByLibrary.simpleMessage("التالي"),
+    "demandeInfos":MessageLookupByLibrary.simpleMessage("شكاية"),
+    "demandePropos":MessageLookupByLibrary.simpleMessage("طلبك حول "),
+    "reponse":MessageLookupByLibrary.simpleMessage("الإجابه"),
+    "matricule":MessageLookupByLibrary.simpleMessage("رقم التسجيل"),
+    "recu":MessageLookupByLibrary.simpleMessage("الوصل"),
+    "rembourser":MessageLookupByLibrary.simpleMessage("التسديد"),
+    "alertNotRecu":MessageLookupByLibrary.simpleMessage("تحقق من رقم الوصل و أعد المحاوله"),
+    "alertNotInam":MessageLookupByLibrary.simpleMessage("تحقق من رقم الوصل و أعد المحاوله"),
+    "alertNotrecu10":MessageLookupByLibrary.simpleMessage("ملفك غير موجود أو خطأ"),
+    "alertNotRecuOk":MessageLookupByLibrary.simpleMessage("حسنا"),
+    "hitLoginNotCorrect":MessageLookupByLibrary.simpleMessage("nni أو inam غير صحيح"),
   };
 }
