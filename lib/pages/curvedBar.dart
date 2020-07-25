@@ -96,25 +96,23 @@ class _curvedBarState extends State<curvedBar> {
                      padding: EdgeInsets.only(bottom: 15),
                      height: 82,
                      child: Text(
-                       'نبذ عن ماكنامي',
-                       style: TextStyle(fontSize: 18,color: Colors.white,decoration: TextDecoration.none,),
+                       AppLocalization.of(context).helpTete,
+                       style: TextStyle(fontSize: 18,color: Colors.white.withOpacity(0.7),decoration: TextDecoration.combine([TextDecoration.overline,TextDecoration.underline]),),
                      ),
                    ),
                    Container(
                      padding: EdgeInsets.only(top: 25,left: 40,right: 40),
-                    child: Directionality(
-                      textDirection: TextDirection.rtl,
+                    // child: Directionality(
                         child:Text(
-                          'كنامي هو تطبيق يتيح لمؤمني الصندوق الوطني للتأمين الصحي (كنام) بمتابعة ملفاتهم المودعه لدي مصاح الصندوق لغرض إطلاعهم علي مرحلة معالجتها. \nفبإمكان مستخدمي هذا التطبيق الحصول علي المعلومات الكافيه المتعلقه بملفاتهم التعويضيه و كذالك الإنتسابيه, كما أن بإمكانهم طلب إستفسار موجه لمصالح الصندوق المختصه في حال حصول تأخير في معالجة أي من ملفاتهم المذكورهٍ',
+                          AppLocalization.of(context).help,
                           style: TextStyle(
                             decoration: TextDecoration.none,
-                            color: Colors.white,
+                            color: Colors.white.withOpacity(0.5),
                             fontSize: 17,
                             letterSpacing: 2.0,
                           ),
                           textAlign: TextAlign.start,
-                        )
-                    ),
+                        ),
                    )
                  ],
                )
@@ -131,7 +129,6 @@ class _curvedBarState extends State<curvedBar> {
           child:Column(
             children: <Widget>[
               SizedBox(width: MediaQuery.of(context).size.width,height: 30,),
-              // loading ? LinearProgressIndicator(backgroundColor: Theme.of(context).secondaryHeaderColor) :Container(),
               Container(
                 height:80,
                 padding: EdgeInsetsDirectional.only(top: 5,end: 20,start: 20),
@@ -156,7 +153,12 @@ class _curvedBarState extends State<curvedBar> {
 
 
                 ),
-                child:Row(
+                // child:Transform(
+                //   transform: Matrix4.identity()
+                //     ..setEntry(3, 2, 5 / 1000)
+                //     ..rotateX(3.14 / 20.0),
+                //   alignment: FractionalOffset.center,
+                  child: Row(
                   textBaseline: TextBaseline.alphabetic,
                   // textDirection: TextDirection.rtl,
                   children: <Widget>[
@@ -174,7 +176,8 @@ class _curvedBarState extends State<curvedBar> {
                     ),
                     Text(AppLocalization.of(context).choiDossier,style: TextStyle(fontSize: 18,color: Colors.black),)
                   ],
-                ),
+                // ),
+                  ),
               ),
               // Divider(height: 0,),
               Container(
@@ -200,7 +203,7 @@ class _curvedBarState extends State<curvedBar> {
                         autofocus: true,
                       ),
                     ),
-                    Text(AppLocalization.of(context).choiRecla,style: TextStyle(fontSize: 18,color: Colors.black),)
+                    Text(AppLocalization.of(context).choiRembourser,style: TextStyle(fontSize: 18,color: Colors.black),)
                   ],
                 ),
               ),
@@ -211,14 +214,10 @@ class _curvedBarState extends State<curvedBar> {
                   children:<Widget>[
                     Container(
                         padding: EdgeInsets.only(left: 10,right: 20),
-                   child: Directionality(
-                    textDirection:TextDirection.rtl,
-                  //padding: EdgeInsets.only(left: 10,right: 10),
                   child:TextFormField(
 
                     cursorColor: Colors.black,
                     controller: recuController,
-                    textDirection: TextDirection.rtl,
                     textAlign: TextAlign.center,
                     obscureText: false,
                     maxLength: 14,
@@ -233,7 +232,7 @@ class _curvedBarState extends State<curvedBar> {
                       labelStyle: TextStyle(fontSize: 20,fontWeight: FontWeight.w100,color: Colors.black.withOpacity(0.6)),
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(35),),
                     ),
-                  ))),
+                  )),
               Container(height: MediaQuery.of(context).size.height/25,),
               Padding(
                 padding: EdgeInsets.only(left: 20,right: 20),
@@ -290,7 +289,7 @@ _passing() async{
       if(formKey.currentState.validate()){
           formKey.currentState.save();
           if (checkedInput.isEmpty)
-          return Toast.show('svp choisir une service', context, duration: 3, gravity: Toast.CENTER,backgroundColor: Colors.black);
+          return Toast.show(AppLocalization.of(context).choiservice, context, duration: 3, gravity: Toast.CENTER,backgroundColor: Colors.black);
           setState(() {pressed=true;});
 
            _showIndecator();
@@ -308,7 +307,7 @@ _passing() async{
          setState(() {
            pressed = false;
          });
-         Toast.show('erreur du service', context,duration: 2,gravity:Toast.CENTER,backgroundColor: Colors.black);
+         Toast.show(AppLocalization.of(context).erreurService, context,duration: 2,gravity:Toast.CENTER,backgroundColor: Colors.black);
        }
        setState(() {pressed=false;});
        if(!goBack)
@@ -324,7 +323,7 @@ _passing() async{
                       Navigator.of(context).pushNamed('/AfterRecu', arguments: user);
                     }
                     }else{
-                      Toast.show('erreur du connection', context,duration: 2,gravity:Toast.CENTER,backgroundColor: Colors.black);
+                      Toast.show(AppLocalization.of(context).erreurConnection, context,duration: 2,gravity:Toast.CENTER,backgroundColor: Colors.black);
                     }
             }
 

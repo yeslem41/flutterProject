@@ -25,6 +25,13 @@ class AppLocalization{
         desc: 'the name of our app it is pretty'
     );
   }
+  String get AppBar{
+    return Intl.message(
+        'app Bar',
+        name: 'AppBar',
+        desc: 'the app bar of our app it is pretty'
+    );
+  }
 
   String get welcome{
     return Intl.message(
@@ -91,11 +98,11 @@ String get gerstionRecla{
         desc: 'the app\'s choiDossier message it is also pretty'
     );
   }
-  String get choiRecla{
+  String get choiRembourser{
     return Intl.message(
-        'app\'s choiRecla',
-        name: 'choiRecla',
-        desc: 'the app\'s choiRecla message it is also pretty'
+        'app\'s choiRembourser',
+        name: 'choiRembourser',
+        desc: 'the app\'s choiRembourser message it is also pretty'
     );
   }
   String get hintRecu{
@@ -196,6 +203,42 @@ String get gerstionRecla{
         desc: 'the app\'s hitLoginNotCorrect message it is also pretty'
     );
   }
+  String get erreurService{
+    return Intl.message(
+        'app\'s erreurService',
+        name: 'erreurService',
+        desc: 'the app\'s erreurService message it is also pretty'
+    );
+  }
+  String get erreurConnection{
+    return Intl.message(
+        'app\'s erreurConnection',
+        name: 'erreurConnection',
+        desc: 'the app\'s erreurConnection message it is also pretty'
+    );
+  }
+  String get help{
+    return Intl.message(
+        'app\'s help',
+        name: 'help',
+        desc: 'the app\'s help message it is also pretty'
+    );
+  }
+  String get helpTete{
+    return Intl.message(
+        'app\'s helpTete',
+        name: 'helpTete',
+        desc: 'the app\'s helpTete message it is also pretty'
+    );
+  }
+  String get choiservice{
+    return Intl.message(
+        'app\'s choiservice',
+        name: 'choiservice',
+        desc: 'the app\'s choiservice message it is also pretty'
+    );
+  }
+
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalization> {

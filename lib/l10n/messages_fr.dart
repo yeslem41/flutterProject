@@ -22,6 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "AppName" : MessageLookupByLibrary.simpleMessage("Macnami"),
+    "AppBar" : MessageLookupByLibrary.simpleMessage("Macnami"),
     "welcome" : MessageLookupByLibrary.simpleMessage("Bienvenue chez Macnami Service, votre satisfaction est notre objectif, venez vous connecter"),
     "loginLabelText" : MessageLookupByLibrary.simpleMessage("veuillez entrer votre nni ou icam"),
     "loginConnect":MessageLookupByLibrary.simpleMessage("Se connectez"),
@@ -31,7 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deconnecter":MessageLookupByLibrary.simpleMessage("Déconnecté"),
     "choisir":MessageLookupByLibrary.simpleMessage("veuillez choisir un service et entrez vorte recu"),
     "choiDossier":MessageLookupByLibrary.simpleMessage("affiliation"),
-    "choiRecla":MessageLookupByLibrary.simpleMessage("reclamation"),
+    "choiRembourser":MessageLookupByLibrary.simpleMessage("rembourser"),
     "hintRecu":MessageLookupByLibrary.simpleMessage("entrez votre recu"),
     "hintRecuFalse":MessageLookupByLibrary.simpleMessage("vtre recu est fausse"),
     "suiviButton":MessageLookupByLibrary.simpleMessage("suivant"),
@@ -46,5 +47,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "alertNotrecu10":MessageLookupByLibrary.simpleMessage("votre dossier introuvable ou errouné!"),
     "alertNotRecuOk":MessageLookupByLibrary.simpleMessage("OK"),
     "hitLoginNotCorrect":MessageLookupByLibrary.simpleMessage("nni ou inam incorrecte"),
+    "erreurService":MessageLookupByLibrary.simpleMessage("erreur du service"),
+    "erreurConnection":MessageLookupByLibrary.simpleMessage("erreur du connection"),
+    "help":MessageLookupByLibrary.simpleMessage("Cnami est une application qui permet à les Maladies bénéficiaires du caisse national d'assurance maladie (Kaname) de suivre leurs dossiers déposés au sanctuaire du fonds dans le but de les informer de l'état de leur traitement. \ nLes utilisateurs de cette application peuvent obtenir des informations suffisantes concernant leurs dossiers de rémunération ainsi que leur affiliation, et ils peuvent demander une enquête adressée aux intérêts du fonds concerné en cas de retard dans le traitement de l'un de ces fichiers mentionnés"),
+    "helpTete":MessageLookupByLibrary.simpleMessage('Comment utiliser Macnami'),
+    "choiservice":MessageLookupByLibrary.simpleMessage('svp choisir une service'),
   };
 }

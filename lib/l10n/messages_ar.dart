@@ -22,6 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "AppName" : MessageLookupByLibrary.simpleMessage("ماكنامي"),
+    "AppBar" : MessageLookupByLibrary.simpleMessage("ماكنامي"),
     "welcome" : MessageLookupByLibrary.simpleMessage("مرحبا بكم معنا في خدمة ماكنامي, رضاكم هدفنا رجاء قم بتسجيل الدخول"),
     "loginLabelText" : MessageLookupByLibrary.simpleMessage("الرجاء إدخال nni أو icam الخاص بك"),
     "loginConnect":MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
@@ -31,7 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deconnecter":MessageLookupByLibrary.simpleMessage("الخروج"),
     "choisir":MessageLookupByLibrary.simpleMessage("رجاء أختر خدمة و أدخل رقم وصلك"),
     "choiDossier":MessageLookupByLibrary.simpleMessage("الانتماء"),
-    "choiRecla":MessageLookupByLibrary.simpleMessage("إعادة المال"),
+    "choiRembourser":MessageLookupByLibrary.simpleMessage("إعادة المال"),
     "hintRecu":MessageLookupByLibrary.simpleMessage("أدخل رقم وصك"),
     "hintRecuFalse":MessageLookupByLibrary.simpleMessage("رقم الوصل غير صحيح"),
     "suiviButton":MessageLookupByLibrary.simpleMessage("التالي"),
@@ -46,5 +47,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "alertNotrecu10":MessageLookupByLibrary.simpleMessage("ملفك غير موجود أو خطأ"),
     "alertNotRecuOk":MessageLookupByLibrary.simpleMessage("حسنا"),
     "hitLoginNotCorrect":MessageLookupByLibrary.simpleMessage("nni أو inam غير صحيح"),
+    "erreurService":MessageLookupByLibrary.simpleMessage("خطأ في الخدمة"),
+    "erreurConnection":MessageLookupByLibrary.simpleMessage("خطأ في الإتصال"),
+    "help":MessageLookupByLibrary.simpleMessage("كنامي هو تطبيق يتيح لمؤمني الصندوق الوطني للتأمين الصحي (كنام) بمتابعة ملفاتهم المودعه لدي مصاح الصندوق لغرض إطلاعهم علي مرحلة معالجتها. \nفبإمكان مستخدمي هذا التطبيق الحصول علي المعلومات الكافيه المتعلقه بملفاتهم التعويضيه و كذالك الإنتسابيه, كما أن بإمكانهم طلب إستفسار موجه لمصالح الصندوق المختصه في حال حصول تأخير في معالجة أي من ملفاتهم المذكورهٍ"),
+    "helpTete":MessageLookupByLibrary.simpleMessage('كيف تستخدم ماكنامي'),
+    "choiservice":MessageLookupByLibrary.simpleMessage('رجاء إختر خدمة'),
+
   };
 }

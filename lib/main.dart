@@ -10,7 +10,6 @@ import 'package:fluttercnam/pages/dashpoard.dart';
 import 'package:fluttercnam/pages/deconnect.dart';
 import 'package:fluttercnam/pages/login_page.dart';
 import 'package:fluttercnam/pages/reclamation.dart';
-import 'package:fluttercnam/pages/deconnect.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fluttercnam/locale/locales.dart';
@@ -29,7 +28,7 @@ class MyApp extends StatelessWidget{
   Widget build(BuildContext context){
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'MACNAMI',
+      onGenerateTitle: (context)=>AppLocalization.of(context).AppName,
       localizationsDelegates: [
         AppLocalizationDelegate(),
         GlobalMaterialLocalizations.delegate,
@@ -39,6 +38,7 @@ class MyApp extends StatelessWidget{
         Locale('fr',''),
         Locale('ar','')
       ],
+      // Localizations.localeOf(context).languageCode == 'ar'  ? 
       theme: ThemeData(
         fontFamily: 'Al-Jazeera-Arabic',
         primarySwatch: MaterialColor(0XFF2e3a8a, {

@@ -37,12 +37,12 @@ class _LoginPageState extends State<LoginPage>{
                user = json.decode(reponse.body);
 
              }catch(e){
-               print(e);
+              Toast.show(AppLocalization.of(context).erreurService, context,duration: 2,gravity:Toast.CENTER,backgroundColor: Colors.black);
              }
              setState(() { loading= false; });
 
              if(user.isEmpty)
-               Toast.show('Erreur de connection', context,duration: 2,gravity: Toast.CENTER,) ;
+               Toast.show(AppLocalization.of(context).erreurConnection, context,duration: 2,gravity: Toast.CENTER,) ;
               else {
                if(user[0]["noBody"]=="yes"){
                  user.clear();
@@ -103,7 +103,7 @@ class _LoginPageState extends State<LoginPage>{
         );
 
         return Scaffold(
-            appBar: AppBar(title: Text(AppLocalization.of(context).AppName), centerTitle: true,),
+            appBar: AppBar(title: Text(AppLocalization.of(context).AppBar), centerTitle: true,),
             body: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
               child: SafeArea(
