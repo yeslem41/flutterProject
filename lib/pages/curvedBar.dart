@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttercnam/locale/locales.dart';
 import 'package:http/http.dart'as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,26 +17,12 @@ class curvedBar extends StatefulWidget {
 class _curvedBarState extends State<curvedBar> {
     PageController _controller = PageController(initialPage: 0);
     GlobalKey _curvedBar = GlobalKey();
+    // Animation tranformAnim;
+    // AnimationController _animationController = AnimationController(vsync: null);
     int _page = 0;
-    Color buttonBackColor ;
-    //principale
-    var recuController =  TextEditingController();
-      String checkedInput = '',_sysLng;
-      bool loading = false;
-      // List logeouts=[];
-      Map<String,dynamic> user;
-      var formKey = GlobalKey <FormState>();
-      bool pressed = false,goBack=false,frlang;
-       SharedPreferences use ;
-    @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    init();
-  }
-  init()async{
-    use = await SharedPreferences.getInstance();
-  }
+    Color buttonBackColor = Colors.white;
+     
+      
     @override
   void dispose() {
     // TODO: implement dispose
@@ -46,15 +33,11 @@ class _curvedBarState extends State<curvedBar> {
 
   @override
   Widget build(BuildContext context) {
-        String myLo = Localizations.localeOf(context).languageCode;
-        if(myLo == 'fr')
-              frlang = true;
-        else  
-              frlang = false;      
+           
     return Scaffold(
               bottomNavigationBar: CurvedNavigationBar(
                 key: _curvedBar,
-                index: 0,
+                index: _page,
                 height: 60,
                 buttonBackgroundColor: Theme.of(context).accentColor,
                 backgroundColor:buttonBackColor,
@@ -62,69 +45,87 @@ class _curvedBarState extends State<curvedBar> {
                 items: <Widget>[
                   Icon(Icons.home,size: 30,),
                   Icon(Icons.help_outline,size: 30,),
-                  // Icon(Icons.exit_to_app,size: 30,),
                   
                 ],
                 onTap: (index){
 
                   setState(() {
                     buttonBackColor = colorResponsible(index);
-                    _page=index;
+                    _controller.animateToPage(index, duration: Duration(milliseconds: 600), curve: Curves.linear);
                         });
                 },
               ),
-              body: _pageView(_page),
+              body: PageView(
+                controller: _controller,
+                onPageChanged:(index){
+                         setState(() {print(index);
+                            buttonBackColor = colorResponsible(index);
+                              _page=index;});  
+                },
+                children:<Widget>[
+                  homePage(),
+                  helpPage(),
+                ]
+              ),
               
     );
   }
-  Widget _pageView(int index){
-        switch(index){
-          case 1 :{
-            return SafeArea(
-             child: Align(
-             alignment: Alignment.topCenter,
-             child: Container(
-               //padding: EdgeInsets.only(left: 15,right: 15,top: 0),
-               height: MediaQuery.of(context).size.height,
-               width: MediaQuery.of(context).size.width,
-               color:Theme.of(context).primaryColor,
-               child: ListView(
-                 children: <Widget>[
-                   Container(
-                     alignment: Alignment.bottomCenter,
-                     color: Theme.of(context).primaryColor,
-                     padding: EdgeInsets.only(bottom: 15),
-                     height: 82,
-                     child: Text(
-                       AppLocalization.of(context).helpTete,
-                       style: TextStyle(fontSize: 18,color: Colors.white.withOpacity(0.7),decoration: TextDecoration.combine([TextDecoration.overline,TextDecoration.underline]),),
-                     ),
-                   ),
-                   Container(
-                     padding: EdgeInsets.only(top: 25,left: 40,right: 40),
-                    // child: Directionality(
-                        child:Text(
-                          AppLocalization.of(context).help,
-                          style: TextStyle(
-                            decoration: TextDecoration.none,
-                            color: Colors.white.withOpacity(0.5),
-                            fontSize: 17,
-                            letterSpacing: 2.0,
-                          ),
-                          textAlign: TextAlign.start,
-                        ),
-                   )
-                 ],
-               )
-             ),
+ 
 
-           )
-             );
-          } 
-          break;
 
-          case 0 : {
-            return GestureDetector(
+
+//change colors of backgroundButtonIcon in curvedBar
+Color colorResponsible(int index){
+       switch (index) {
+         case 0:{
+              return Colors.white;
+           }
+           break;
+           case 1:{
+              return Theme.of(context).primaryColor;
+           }
+           break;
+         default:{
+         return Colors.white;
+         }
+       }
+}
+}
+//home page
+class homePage extends StatefulWidget {
+  @override
+  _homePageState createState() => _homePageState();
+}
+
+class _homePageState extends State<homePage> {
+    List <String> recuCharactaire=["1","2","3","4","5","6","7","8","9","0","/"];
+    Color buttonBackColor ;
+    var recuController =  TextEditingController();
+      String checkedInput = '',_sysLng;
+      bool loading = false;
+      Map<String,dynamic> user;
+      var formKey = GlobalKey <FormState>();
+      bool pressed = false,goBack=false,frlang;
+       SharedPreferences use ;
+  bool validateRecu(String input){
+    if((input.length!=11)||(input[6]!="/"))
+         return false;
+
+    for(int i=0;i<input.length;i++){
+      var char = input[i];
+      if(!recuCharactaire.contains(char))
+                return false;
+    }
+    return true;
+  }     
+  @override
+  Widget build(BuildContext context) {
+     String myLo = Localizations.localeOf(context).languageCode;
+        if(myLo == 'fr')
+              frlang = true;
+        else  
+              frlang = false;  
+    return GestureDetector(
           onTap: ()=>FocusScope.of(context).unfocus(),
           child:Column(
             children: <Widget>[
@@ -153,14 +154,8 @@ class _curvedBarState extends State<curvedBar> {
 
 
                 ),
-                // child:Transform(
-                //   transform: Matrix4.identity()
-                //     ..setEntry(3, 2, 5 / 1000)
-                //     ..rotateX(3.14 / 20.0),
-                //   alignment: FractionalOffset.center,
                   child: Row(
                   textBaseline: TextBaseline.alphabetic,
-                  // textDirection: TextDirection.rtl,
                   children: <Widget>[
                     Padding(
                       padding:frlang ? EdgeInsets.only(left: 20) : EdgeInsets.only(right: 20),
@@ -176,10 +171,8 @@ class _curvedBarState extends State<curvedBar> {
                     ),
                     Text(AppLocalization.of(context).choiDossier,style: TextStyle(fontSize: 18,color: Colors.black),)
                   ],
-                // ),
                   ),
               ),
-              // Divider(height: 0,),
               Container(
                 margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
                 padding: EdgeInsets.zero,
@@ -189,7 +182,6 @@ class _curvedBarState extends State<curvedBar> {
                    ),
                 child:Row(
                   textBaseline: TextBaseline.alphabetic,
-                  // textDirection: TextDirection.rtl,
                   children: <Widget>[
                     Padding(
 
@@ -215,15 +207,15 @@ class _curvedBarState extends State<curvedBar> {
                     Container(
                         padding: EdgeInsets.only(left: 10,right: 20),
                   child:TextFormField(
-
+                     keyboardType: TextInputType.text,
                     cursorColor: Colors.black,
                     controller: recuController,
                     textAlign: TextAlign.center,
                     obscureText: false,
-                    maxLength: 14,
-                   // keyboardType : TextInputType.number,
+                    maxLength: 11,
+                    // !validateRecu(val)
                     textInputAction: TextInputAction.done,
-                    validator: (val)=> val.length ==0 ? AppLocalization.of(context).hintRecu : (val.length <5 ? AppLocalization.of(context).hintRecuFalse : null),
+                    validator: (val)=> val==null ? AppLocalization.of(context).hintRecuFalse : null,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
@@ -259,33 +251,11 @@ class _curvedBarState extends State<curvedBar> {
                 ],
           ),
         );
-          }
-          break;
-          default: {
-            return null;
-          }
-          break;
-        }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-//functions of home page
-_passing() async{
-  print(user);
-  user?.clear();print(user);
+  }
+  _passing() async{
+  user?.clear();
   _sysLng = Localizations.localeOf(context).languageCode; 
   FocusScope.of(context).unfocus();
-      //  user.clear();
       if(formKey.currentState.validate()){
           formKey.currentState.save();
           if (checkedInput.isEmpty)
@@ -312,13 +282,12 @@ _passing() async{
        setState(() {pressed=false;});
        if(!goBack)
            Navigator.pop(context,'success');
-        // Navigator.pushReplacement(context, new MaterialPageRoute(builder: (BuildContext context) => new curvedBar()));
-          print(user); print("user");
+         print(user); print("user");
           if(!goBack){
                     if(user.isNotEmpty) {
                     if(user["recuId"]=="no" || user["ARid"]=="no"){
-                          user.clear(); _dialog();//Navigator.of(context).pushNamed('/AfterRecu', arguments: user);
-                          }else{
+                          user.clear(); _dialog();
+                           }else{
                       user["recu"]=recuController.text; print(user);
                       Navigator.of(context).pushNamed('/AfterRecu', arguments: user);
                     }
@@ -328,6 +297,7 @@ _passing() async{
             }
 
          }}
+//functions of home page
 
 _showIndecator(){
          goBack = false;
@@ -348,11 +318,11 @@ _showIndecator(){
                  );
          }).then((val){
            if(val != 'success'){goBack = true;
-            setState(() {pressed = false;});print("eeeeeeeeeee");
+            setState(() {pressed = false;});
                     }else
                     print('success');
-           })
-         ;}
+           });
+           }
 _dialog() {
         showGeneralDialog(
           barrierColor: Colors.white.withOpacity(0.3),
@@ -412,25 +382,56 @@ _dialog() {
         },
         );
       }
+}
+//help page
+class helpPage extends StatefulWidget {
+  @override
+  _helpPageState createState() => _helpPageState();
+}
 
-//change colors of backgroundButtonIcon in curvedBar
-Color colorResponsible(int index){
-       switch (index) {
-         case 1:{
-              return Theme.of(context).primaryColor;
-           }
-           break;
-           case 0:{
-              return Colors.white;
-           }
-           break;
-          //  case 2:{
-          //     return Theme.of(context).primaryColor.withOpacity(0.8);
-          //  }
-          //  break;
-         default:{
-         return Colors.white;
-         }
-       }
+class _helpPageState extends State<helpPage> {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+             child: Align(
+             alignment: Alignment.topCenter,
+             child: Container(
+               //padding: EdgeInsets.only(left: 15,right: 15,top: 0),
+               height: MediaQuery.of(context).size.height,
+               width: MediaQuery.of(context).size.width,
+               color:Theme.of(context).primaryColor,
+               child: ListView(
+                 children: <Widget>[
+                   Container(
+                     alignment: Alignment.bottomCenter,
+                     color: Theme.of(context).primaryColor,
+                     padding: EdgeInsets.only(bottom: 15),
+                     height: 82,
+                     child: Text(
+                       AppLocalization.of(context).helpTete,
+                       style: TextStyle(fontSize: 18,color: Colors.white.withOpacity(0.7),decoration: TextDecoration.combine([TextDecoration.overline,TextDecoration.underline]),),
+                     ),
+                   ),
+                   Container(
+                     padding: EdgeInsets.only(top: 25,left: 40,right: 40),
+                    // child: Directionality(
+                        child:Text(
+                          AppLocalization.of(context).help,
+                          style: TextStyle(
+                            decoration: TextDecoration.none,
+                            color: Colors.white.withOpacity(0.5),
+                            fontSize: 17,
+                            letterSpacing: 2.0,
+                          ),
+                          textAlign: TextAlign.start,
+                        ),
+                   )
+                 ],
+               )
+             ),
+
+           )
+             ) ;
+  }
 }
-}
+

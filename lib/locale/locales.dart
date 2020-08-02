@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttercnam/pages/fragment.dart';
-import 'package:fluttercnam/pages/reclamation.dart';
 import 'package:intl/intl.dart';
 import 'package:fluttercnam/l10n/messages_all.dart';
 import 'dart:async';
@@ -238,25 +236,58 @@ String get gerstionRecla{
         desc: 'the app\'s choiservice message it is also pretty'
     );
   }
+  String get callUs{
+    return Intl.message(
+        'app\'s callUs',
+        name: 'callUs',
+        desc: 'the app\'s callUs message it is also pretty'
+    );
+  }
+  String get contactUs{
+    return Intl.message(
+        'app\'s contactUs',
+        name: 'contactUs',
+        desc: 'the app\'s contactUs message it is also pretty'
+    );
+  }
+  String get notreLieu{
+    return Intl.message(
+        'app\'s notreLieu',
+        name: 'notreLieu',
+        desc: 'the app\'s notreLieu message it is also pretty'
+    );
+  }
+  String get notreMapgoogle{
+    return Intl.message(
+        'app\'s notreMapgoogle',
+        name: 'notreMapgoogle',
+        desc: 'the app\'s notreMapgoogle message it is also pretty'
+    );
+  }
+  String get smsemail{
+    return Intl.message(
+        'app\'s smsemail',
+        name: 'smsemail',
+        desc: 'the app\'s smsemail message it is also pretty'
+    );
+  }
 
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalization> {
   @override
   bool isSupported(Locale locale) {
-    // TODO: implement isSupported
     return ['fr','ar'].contains(locale.languageCode);
   }
 
   @override
   Future<AppLocalization> load(Locale locale) {
-    // TODO: implement load
     return AppLocalization.load(locale);
   }
 
   @override
   bool shouldReload(LocalizationsDelegate<AppLocalization> old) {
-    // TODO: implement shouldReload
+    
     return false;
   }
   

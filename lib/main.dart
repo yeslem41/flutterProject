@@ -1,15 +1,13 @@
-//import 'dart:io';
+
 import 'package:fluttercnam/pages/AfterRecu.dart';
 import 'package:fluttercnam/pages/curvedBar.dart';
-
-//import 'package:splashscreen/splashscreen.dart';
-//import 'package:toast/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttercnam/pages/dashpoard.dart';
 import 'package:fluttercnam/pages/deconnect.dart';
 import 'package:fluttercnam/pages/login_page.dart';
 import 'package:fluttercnam/pages/reclamation.dart';
+import 'package:fluttercnam/pages/contactUs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fluttercnam/locale/locales.dart';
@@ -29,16 +27,15 @@ class MyApp extends StatelessWidget{
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateTitle: (context)=>AppLocalization.of(context).AppName,
-      localizationsDelegates: [
+      localizationsDelegates: [ 
         AppLocalizationDelegate(),
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate
-      ],
+      ], 
       supportedLocales: [
         Locale('fr',''),
         Locale('ar','')
       ],
-      // Localizations.localeOf(context).languageCode == 'ar'  ? 
       theme: ThemeData(
         fontFamily: 'Al-Jazeera-Arabic',
         primarySwatch: MaterialColor(0XFF2e3a8a, {
@@ -79,27 +76,27 @@ class MyApp extends StatelessWidget{
         }),
         scaffoldBackgroundColor: Colors.white,
       ),
-      //home: Auth.isLogin?Pageprincipale():LoginPage(),
       routes: {
-       '/':(context)=>Splash(loged: loged),
+       '/':(context)=>Mysplash(loged: loged),
        '/PagePrincipale':(_) => curvedBar(),
         '/AfterRecu':(_)=>AfterRecu(),
         '/LoginPage':(_)=>LoginPage(),
         '/Reclammation':(_)=>Reclammation(),
-        '/deconnected':(_)=>Deconnect()
+        '/deconnected':(_)=>Deconnect(),
+        '/us':(_)=>aboutUs()
       }
     );
   }
 }
 //LoginPage
-class Splash extends StatefulWidget {
+class Mysplash extends StatefulWidget {
   bool loged;
-  Splash({this.loged});
+  Mysplash({this.loged});
   @override
-  _SplashState createState() => _SplashState();
+  _MysplashState createState() => _MysplashState();
 }
 
-class _SplashState extends State<Splash> {
+class _MysplashState extends State<Mysplash> {
   void initState(){
     super.initState();
     Future.delayed(Duration(seconds:3),(){

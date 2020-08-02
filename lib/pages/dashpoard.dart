@@ -130,7 +130,7 @@ class _DashboardState extends State<Dashboard> {
                                             child:Container(
                                               width: 100,
                                               child: InkWell(
-                                                onTap: (){print('object3');},
+                                                onTap: (){Navigator.of(context).pushNamed('/us');},
                                                 child:Column(
                                                   children: <Widget>[
                                                     Container(
@@ -140,7 +140,7 @@ class _DashboardState extends State<Dashboard> {
                                                           size: Size.square(100),
                                                           painter:CirclePainter(context: context), 
                                                       child:ClipOval(
-                                                               child: Icon(Icons.live_help,), 
+                                                               child: Icon(Icons.report,), 
                                                     ))),
                                                     SizedBox(height: 5,),
                                                     Text(AppLocalization.of(context).fragment)
@@ -268,6 +268,7 @@ class footClipper extends CustomClipper<Path> {
   
 }
 class CirclePainter extends CustomPainter {
+
   BuildContext context;
   CirclePainter({this.context});
   @override

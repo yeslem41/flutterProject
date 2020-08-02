@@ -1,11 +1,11 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttercnam/locale/locales.dart';
+import 'package:fluttercnam/pages/helperDB.dart';
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
-// import 'package:flushbar/flushbar.dart';
 
 class AfterRecu extends StatefulWidget{
   @override
@@ -17,50 +17,24 @@ class _AfterRecuState extends State<AfterRecu> {
       //  List formInquity ;
       //    _AfterRecuState.formInquity(this.formInquity);
      Color buttonColor = Color(0xFFe81c8b).withOpacity(0.5);
-     Map<String,dynamic> infoUser ;
+     Map<String,dynamic> infoUser,infosPostRecla;
      TextEditingController textController = TextEditingController();
-     bool progress = false,snake=false;
-     String snakeSms='',what='';
+     TextEditingController nniController = TextEditingController();
+     bool progress = false,snake=false,posted=false;
+     String snakeSms='',what='',recu='',dateFromatted='';
      GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+     var formKey = GlobalKey<FormState>();
   //   @override
   // void initState() {
   //   // TODO: implement initState
   //   super.initState();
   // }
-   _createAlbum() async{
-     
-     setState(() {progress = true; });
-     try{
-  Response reponse = await post(
-    'https://miage2a2i.000webhostapp.com/inquiry_post.php',
-    body:<String, String>{
-      'body': textController.text,
-      'recu':infoUser["recu"],
-    },
-  );
-  if(reponse.statusCode != 200)
-                 throw "errer du server";
-   setState(() {progress = false; });
-  print(infoUser[3]);
-  var infos = jsonDecode(reponse.body);
-  print(infos);
-  if((infos[0]["success"] == "true") || (infos[0]["success"] == "fasle"))
-    scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(infos[0]["desc"]),)) ;
-   else  
-   Toast.show('error of connection', context,duration: 3,gravity:Toast.CENTER);
- 
- }catch(e){
-   setState(() {progress = false; });
-   print(e);
- }
-  
-  //  else
-  // showSnak("error of connection");
-}
+   
  
   @override
   Widget build(BuildContext context) {
        infoUser = ModalRoute.of(context).settings.arguments;
+       recu = infoUser['recu'];
        if(Localizations.localeOf(context).languageCode == 'fr')
               infoUser['cheked']=='rembourser'?what='de ${infoUser['cheked']}':what='d\'${infoUser['cheked']}';
        else
@@ -184,55 +158,17 @@ class _AfterRecuState extends State<AfterRecu> {
                                     ],    
                                       )),
                               SizedBox(height: 35,),
-                              //  Column(
-                              //         crossAxisAlignment : CrossAxisAlignment.end,
-                              //         children: <Widget>[
-                              //           Padding(
-                              //             padding: EdgeInsets.only(right:35,left:15),
-                              //             child:Text('ستتمكن من إرسال أستفسار بعد أنتاه المد التي من المترض أن يعالج فيها ملفك أي بعد 7 أيام',
-                              //               textAlign: TextAlign.end,
-                              //               style: TextStyle(
-                              //                 color: Colors.black,
-                              //                 fontSize: 18,
-                              //                 ),
-                              //               ),)
-                              //       ],) ,
+                              
                                   
                         ],
                  ),
          ),
       
-      //    persistentFooterButtons: <Widget>[
-      //        Container(
-      //          width: MediaQuery.of(context).size.width,
-      //          //alignment: Alignment.bottomCenter,
-      //          child: Material(
-      //            color: buttonColor,
-      //            child: MaterialButton(
-      //              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      //              child: Text(
-      //                ' إنشاء أستفسار',style: TextStyle(color: Colors.white,fontSize: 18),
-      //              ),
-      //               onPressed: _dilog,
-      //             //(){
-      //             //          _dilog;
-      //                  //  navigateToSubPage(context) ;
-      //               //  Toast.show('msg', context,duration: 3);
-      //                 // setState((){buttonColor = Theme.of(context).accentColor;});
-                      
-      //               //  },
-      //            ),
-      //          )
-      //        )
-      // ],
-      
 
     );
   }
   
-  //   Future navigateToSubPage(context) async {
-//     Navigator.push(context, MaterialPageRoute(builder: (context)=>Recomandation(infoUser),));
-// }
+  
 void _dilog(){
   showGeneralDialog(
     barrierLabel: 'Label',
@@ -241,13 +177,14 @@ void _dilog(){
      transitionDuration: Duration(milliseconds: 0),
     context: context, 
     pageBuilder: (context,anim1,anim2){
-            return SafeArea(
-            // backgroundColor:Color(0xFF2e3a8a),
-            child: GestureDetector(
+            return Scaffold(
+              backgroundColor: Color(0xFF2e3a8a),
+              body:GestureDetector(
               onTap: (){
                 FocusScope.of(context).unfocus();
               },
-              child:SafeArea(
+               child:Form( 
+                   key: formKey,
                       child: ListView(
                         padding: EdgeInsets.only(left:25, right:25),
                          children:<Widget>[  
@@ -256,13 +193,38 @@ void _dilog(){
                                   color: Colors.white,
                                   child: Padding(
                                       padding: EdgeInsets.only(top: 20,left: 15,right:35),
-                                     child: TextField(
+                                     child: TextFormField(
                                       controller: textController,  
-                                      textAlign: TextAlign.start,  
+                                      textAlign: Localizations.localeOf(context).languageCode=='fr' ? TextAlign.start:TextAlign.end,  
                                       maxLines: 13,
                                       decoration: InputDecoration.collapsed(hintText: " أكتب أستفسارك هنا : تنبيه إلي أن أي إساءه يحاسب عليها"), 
                                       ),
                                       ),),
+                                      SizedBox(height:15),
+                                      Padding(
+                                    padding: EdgeInsets.only(left:35,right:35),
+                                    child: Material(
+                                       color: Theme.of(context).primaryColor,
+                                        child:TextFormField( 
+                                            controller: nniController,
+                                            textAlign: TextAlign.center,
+                                            validator: (val)=>val.length <= 5 ? 'enter matricule cnam' : null,
+                                            obscureText: false,
+                                            decoration: InputDecoration(
+                                              labelText:'nni Obligatoire',
+                                              contentPadding: EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 5.0),
+                                              labelStyle: TextStyle(
+                                                color: Colors.black.withBlue(100),
+                                              ),
+                                              filled: true,
+                                              fillColor: Colors.white,
+                                                   border: OutlineInputBorder(
+                                                     borderRadius: BorderRadius.circular(50.0)
+                                                   )
+                                            ),
+                                            ) 
+                                    ) 
+                                      ),
                               SizedBox(height: 30,),      
                                 Padding(
                                     padding: EdgeInsets.only(left:35,right:35),
@@ -270,13 +232,12 @@ void _dilog(){
                                             color: Color(0xFF43bdd2), 
                                             borderRadius: BorderRadius.circular(25.0),
                                             child: MaterialButton(
-                                             onPressed:(){ _createAlbum();
-                                             textController.clear();
-                                               Navigator.pop(context);
-                                              
+                                             onPressed:(){ 
+                                               if(formKey.currentState.validate()){
+                                                  saveReclamation();
+                                                  Navigator.pop(context);
+                                                       }
                                              }, 
-                                            // // Scaffold.of(context).showSnackBar(SnackBar(content: Text('first test in flutter')));
-                                          
                                             child: Text('إرسال'),
                                             ),
                                             
@@ -285,116 +246,105 @@ void _dilog(){
                                     
                               ],
                             
-                      ),
+                      )),
                    ),
-            ),
+          
     );
     });
 }
-
-
+void saveReclamation()async{
+   var use = await SharedPreferences.getInstance();
+      String imaUser = use.getString("recu");
+     await _createAlbum(imaUser);
+     if(posted){
+       print(dateFromatted);
+    reclamation r = reclamation(textController.text,imaUser,'',dateFromatted,nniController.text,infoUser["recu"]);
+    HelperDB DB = HelperDB();
+    await DB.insertRecla(r);
+    
+             }
 }
-
-
-
-
-
-
-
-
-/*
-
- class Recomandation extends StatelessWidget{
-  List user ;
-     Recomandation(this.user);
-  TextEditingController textController = TextEditingController();
-
-  _createAlbum() async{
-  var reponse = await post(
+_createAlbum(String imaUser) async{
+     
+     setState(() {progress = true; });
+     try{
+  Response reponse = await post(
     'https://miage2a2i.000webhostapp.com/inquiry_post.php',
     body:<String, String>{
       'body': textController.text,
-      'recu':'c13424',
+      'superUser':imaUser,
+      'imat':'null',
+      'nni':nniController.text,
+      'recu':infoUser["recu"],
     },
   );
-  print(jsonEncode(<String, String>{
-      'body': textController.text,
-      'recu':'c13424',
-    }));
-  print(jsonDecode(reponse.body));
+   if(reponse.statusCode != 200)
+                 throw "errer du server";
+   setState(() {progress = false; });
+    infosPostRecla = json.decode(reponse.body);
+  print(infosPostRecla);
+ 
+ }catch(e){
+   setState(() {progress = false; });
+   Toast.show('error of service', context,duration: 3,gravity:Toast.CENTER);
+   return null;
+ }
+ setState(() {progress = false; });
+ if(infosPostRecla.isNotEmpty){ 
+    scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(infosPostRecla["desc"]),)) ;
+    if(infosPostRecla["success"] == "true"){
+                dateFromatted = infosPostRecla['date'];
+                posted = true;
+   
+   }
+   }else  
+      Toast.show('error of connection', context,duration: 3,gravity:Toast.CENTER);
+ 
 }
 
-  // BuildContext context;
-  @override
-  Widget build(BuildContext context) {
-    
-    // TODO: implement build
-    return Scaffold(
-            backgroundColor:Color(0xFF2e3a8a),
-            body: GestureDetector(
-              onTap: (){
-                FocusScope.of(context).unfocus();
-              },
-                   child: SafeArea(
-                      child: ListView(
-                        padding: EdgeInsets.only(left:25, right:25),
-                         children:<Widget>[  
-                                SizedBox(height: 25,),
-                                Card(
-                                  color: Colors.white,
-                                  child: Padding(
-                                      padding: EdgeInsets.only(top: 20,left: 15,right:15),
-                                     child: TextField(
-                                      controller: textController,  
-                                      textAlign: TextAlign.end,  
-                                      maxLines: 13,
-                                      decoration: InputDecoration.collapsed(hintText: "أكتب أستفسارك"), 
-                                      ),
-                                      ),),
-                              SizedBox(height: 30,),      
-                                Padding(
-                                    padding: EdgeInsets.only(left:35,right:35),
-                                    child:Builder(
-                                      builder: (BuildContext context){
-                                        
-                                          return Material(
-                                            color: Color(0xFF43bdd2), 
-                                            borderRadius: BorderRadius.circular(25.0),
-                                            child: MaterialButton(
-                                             onPressed:(){
-                                               Navigator.pop(context);
-                                             }, 
-                                            // // Scaffold.of(context).showSnackBar(SnackBar(content: Text('first test in flutter')));
-                                          
-                                            child: Text('إرسال'),
-                                            ),
-                                            
-                                            );  })
-                                )      
-                                    
-                              ],
-                            
-                      ),
-                   ),
-              ),
-    );
-  }
-} 
-*/
+}
 
-// children: <Widget>[
-//              Text('dddd',style: TextStyle(color: Colors.black),),
-//              SizedBox(height: 50,),
-//              Text('dddd',style: TextStyle(color: Colors.black),),
-//              SizedBox(height: 50,),
-//              Text('dddd',style: TextStyle(color: Colors.black),),SizedBox(height: 50,),
-//              Text('dddd',style: TextStyle(color: Colors.black),),SizedBox(height: 50,),
-//              Text('dddd',style: TextStyle(color: Colors.black),),SizedBox(height: 50,),
-//              Text('dddd',style: TextStyle(color: Colors.black),),SizedBox(height: 50,),
-//              Text('dddd',style: TextStyle(color: Colors.black),),SizedBox(height: 50,),
-//              Text('dddd',style: TextStyle(color: Colors.black),),SizedBox(height: 50,),
-//              Text('dddd',style: TextStyle(color: Colors.black),),SizedBox(height: 50,),
-//              Text('dddd',style: TextStyle(color: Colors.black),),SizedBox(height: 50,),
-//              Text('dddd',style: TextStyle(color: Colors.black),),SizedBox(height: 50,),
-//              Text('dddd',style: TextStyle(color: Colors.black),),SizedBox(height: 50,),
-//            ],
+// _createAlbum(String imaUser) async{
+     
+//      setState(() {progress = true; });
+//      try{
+//   Response reponse = await post(
+//     'https://miage2a2i.000webhostapp.com/inquiry_post.php',
+//     body:<String, String>{
+//       'body': textController.text,
+//       'superUser':imaUser,
+//       'imat':matController.text,
+//       'nni':nniController.text,
+//       'recu':recuController.text,
+//     },
+//   );
+//   if(reponse.statusCode != 200)
+//                  throw "errer du server";
+//    setState(() {progress = false; });
+//     infosPostRecla = json.decode(reponse.body);
+//   print(infosPostRecla);
+ 
+//  }catch(e){
+//    setState(() {progress = false; });
+//    Toast.show('error of service', context,duration: 3,gravity:Toast.CENTER);
+//    return null;
+//  }
+//  if(infosPostRecla.isNotEmpty){ 
+//   // if((infosPostRecla["success"] == "true") || (infosPostRecla["success"] == "fasle")){
+//     scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(infosPostRecla["desc"]),)) ;
+//     if(infosPostRecla["success"] == "true"){
+//                 dateFromatted = infosPostRecla['date'];
+//                 posted = true;
+   
+//    }
+//    }else  
+//       Toast.show('error of connection', context,duration: 3,gravity:Toast.CENTER);
+ 
+// }
+
+
+
+
+
+
+

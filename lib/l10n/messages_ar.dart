@@ -27,8 +27,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginLabelText" : MessageLookupByLibrary.simpleMessage("الرجاء إدخال nni أو icam الخاص بك"),
     "loginConnect":MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "suivi":MessageLookupByLibrary.simpleMessage("متابعة الملفات"),
-    "gerstionRecla":MessageLookupByLibrary.simpleMessage("إدارة الشكاوي"),
-    "fragment":MessageLookupByLibrary.simpleMessage("نبذة"),
+    "gerstionRecla":MessageLookupByLibrary.simpleMessage("الشكاوي"),
+    "fragment":MessageLookupByLibrary.simpleMessage("كنام"),
     "deconnecter":MessageLookupByLibrary.simpleMessage("الخروج"),
     "choisir":MessageLookupByLibrary.simpleMessage("رجاء أختر خدمة و أدخل رقم وصلك"),
     "choiDossier":MessageLookupByLibrary.simpleMessage("الانتماء"),
@@ -52,6 +52,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "help":MessageLookupByLibrary.simpleMessage("كنامي هو تطبيق يتيح لمؤمني الصندوق الوطني للتأمين الصحي (كنام) بمتابعة ملفاتهم المودعه لدي مصاح الصندوق لغرض إطلاعهم علي مرحلة معالجتها. \nفبإمكان مستخدمي هذا التطبيق الحصول علي المعلومات الكافيه المتعلقه بملفاتهم التعويضيه و كذالك الإنتسابيه, كما أن بإمكانهم طلب إستفسار موجه لمصالح الصندوق المختصه في حال حصول تأخير في معالجة أي من ملفاتهم المذكورهٍ"),
     "helpTete":MessageLookupByLibrary.simpleMessage('كيف تستخدم ماكنامي'),
     "choiservice":MessageLookupByLibrary.simpleMessage('رجاء إختر خدمة'),
+    "callUs":MessageLookupByLibrary.simpleMessage("إتصل بنا"),
+    "contactUs":MessageLookupByLibrary.simpleMessage("من نحن؟"),
+    "notreLieu":MessageLookupByLibrary.simpleMessage("الموقع"),
+    "notreMapgoogle":MessageLookupByLibrary.simpleMessage("الموقع الجغرافي"),
+    "smsemail":MessageLookupByLibrary.simpleMessage("أرسل إميل"),
 
   };
 }

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:fluttercnam/pages/login_page.dart';
-
+import 'package:fluttercnam/pages/helperDB.dart';
 class Deconnect extends StatefulWidget {
   @override
   _DeconnectState createState() => _DeconnectState();
@@ -15,6 +15,7 @@ class _DeconnectState extends State<Deconnect> {
   List logeouts=[];
   SharedPreferences use ;
   bool goBack,pressed;
+  HelperDB DB = HelperDB();
     @override
   void initState() {
     // TODO: implement initState
@@ -96,9 +97,10 @@ class _DeconnectState extends State<Deconnect> {
              Toast.show('errer de connection', context,duration: 2,gravity: Toast.CENTER);
        }else{print(logeouts[0]["logeout"]);
          if(logeouts[0]["logeout"] == "true"){
-                    print('logeout true');
                     use.remove("login");
                      use.remove("recu");
+                     use.remove("getReclamations");
+                     DB.deleteAllReclas();
                      Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
