@@ -57,5 +57,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "notreLieu":MessageLookupByLibrary.simpleMessage("lieu"),
     "notreMapgoogle":MessageLookupByLibrary.simpleMessage("Cnam sur maps"),
     "smsemail":MessageLookupByLibrary.simpleMessage("Envoyez email"),
+    "AucunRecla":MessageLookupByLibrary.simpleMessage('tu n\'as aucun reclamation'),
   };
 }

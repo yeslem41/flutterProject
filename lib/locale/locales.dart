@@ -271,6 +271,13 @@ String get gerstionRecla{
         desc: 'the app\'s smsemail message it is also pretty'
     );
   }
+  String get AucunRecla{
+    return Intl.message(
+        'app\'s AucunRecla',
+        name: 'AucunRecla',
+        desc: 'the app\'s AucunRecla message it is also pretty'
+    );
+  }
 
 }
 

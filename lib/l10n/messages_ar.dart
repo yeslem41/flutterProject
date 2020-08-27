@@ -57,6 +57,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "notreLieu":MessageLookupByLibrary.simpleMessage("الموقع"),
     "notreMapgoogle":MessageLookupByLibrary.simpleMessage("الموقع الجغرافي"),
     "smsemail":MessageLookupByLibrary.simpleMessage("أرسل إميل"),
+    "AucunRecla":MessageLookupByLibrary.simpleMessage('ليس لديك شكاوي'),
 
   };
 }

@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:fluttercnam/locale/locales.dart';
 import 'package:fluttercnam/pages/helperDB.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
-
 class Reclammation extends StatefulWidget {
   @override
   _ReclammationState createState() => _ReclammationState();
@@ -16,35 +16,73 @@ TextEditingController textController =TextEditingController();
 TextEditingController matController = TextEditingController();
 TextEditingController recuController = TextEditingController();
 TextEditingController nniController = TextEditingController();
+GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+String type ,typeCheck='';
 var formKey = GlobalKey<FormState>();
 HelperDB DB = HelperDB();
 List<reclamation> listReclas;
 List getReclas=[];
+List getReponse=[];
+GlobalKey<RefreshIndicatorState> refreshKey;
 Map<String,dynamic> infosPostRecla ;
  bool progress = false,posted=false,getRelasBool=false,failGetReclas=true,noRecla = false;
- GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   String dateFromatted = '',lang='';
  int index = 0;
+ SharedPreferences reponses;
 @override
   void initState() {
     // TODO: implement initState
     super.initState();
     init();
+    initReponse();
+    refreshKey = GlobalKey<RefreshIndicatorState>();
+    
   }
-  init()async{
+  Future<Null> initReponse() async{
+     reponses = await SharedPreferences.getInstance();
+                    // bool alreadyGet = reponses.getBool("getReclamations")==true?true:false;
+                    //             if(!alreadyGet)
+                    //               return null;
+                                  
+    String imaUser = reponses.getString("recu");
+      try{
+          Response response = await get('https://miage2a2i.000webhostapp.com/get_reponses.php?superuser='+imaUser);
+          if(response.statusCode != 200)
+             throw 'errer du service';
+             getReponse = jsonDecode(response.body);
+             print(getReponse);
+      }catch(e){
+          Toast.show('error du service', context,duration: 2,gravity: Toast.TOP);
+          return null;
+      }
+       
+        for(int i=0;i<getReponse.length;i++){
+          // if(!reponses.containsKey(getReponse[i]['recla_id'])){
+                       
+                       reponses.setString(getReponse[i]['recla_id'].toString()+'etat', getReponse[i]['etat']);
+                        reponses.setString(getReponse[i]['recla_id'].toString()+'body', getReponse[i]['body']);
+                      //  print(reponses.getString(getReponse[i]['recla_id']));
+                      //  }
+        }
+     
+  }
+  Future<Null>init()async{
     var use = await SharedPreferences.getInstance();
-   bool alreadyGet = use?.getBool("getReclamations")??false;
+   bool alreadyGet = use?.getBool("getReclamations")==true?true : false;print(alreadyGet);
     if(!alreadyGet){
     getReclas.clear();
       
     try{
     var use = await SharedPreferences.getInstance();
-      String imaUser = use.getString("recu");
+      String imaUser = use.getString("recu");print(imaUser);
     Response allReclas = await get('https://miage2a2i.000webhostapp.com/getReclas.php?superImat='+imaUser);
     if(allReclas.statusCode != 200)
          throw 'erreur du service';
-       getReclas = jsonDecode(allReclas.body);
+       getReclas = jsonDecode(allReclas.body);print(getReclas);
        }catch(e){
+         print('reclas');
+         print(e);
+         print('reclas');
          setState(() {
            getRelasBool=true;
          });
@@ -53,9 +91,9 @@ Map<String,dynamic> infosPostRecla ;
          if(getReclas[0]["noRecla"] == "yes"){
            setState(() { noRecla = true; });
            return null;
-          }else{ setState(() { noRecla = false; });   
+          }else{ setState(() { noRecla = false; }); 
           for(int i=0;i<getReclas.length;i++)
-           DB.insertRecla(reclamation(getReclas[i]['body'],getReclas[i]['superMat'],getReclas[i]['imat'],getReclas[i]['time'],getReclas[i]['nni'],getReclas[i]['recu'],))  ;  
+           DB.insertRecla(reclamation(getReclas[i]['recla_id'].toString(),getReclas[i]['body'],getReclas[i]['superMat'],getReclas[i]['imat'],getReclas[i]['time'],getReclas[i]['nni'],getReclas[i]['recu'],getReclas[i]['type']))  ;  
          var use = await SharedPreferences.getInstance();
          use.setBool('getReclamations', true);
          setState(() {
@@ -63,19 +101,30 @@ Map<String,dynamic> infosPostRecla ;
          });
          }
        }
-       }else
-          setState(() {failGetReclas=false;});
+       }else{
+          setState(() {failGetReclas=false;});}
+          try{ 
        listReclas = await DB.getAllRecla();
-       
+       print(listReclas);
+       }catch(e){
+         print('e');
+            print(e);
+            print('e');
+       }
+      //  await DB.closeDB();
         setState(() {
            getRelasBool=true;
          });
   }
+  Future<Null> refresh()async{
+                   init();
+                   initReponse();
+  }
   @override
   Widget build(BuildContext context) {
-    lang = Localizations.localeOf(context).languageCode;
+//  print(listReclas.length);
     return Scaffold(
-      key: scaffoldKey,
+      key: _scaffoldKey,
          body:SafeArea(
              child: Column(
                    children:<Widget>[
@@ -88,26 +137,53 @@ Map<String,dynamic> infosPostRecla ;
                           ),   
                   progress ?LinearProgressIndicator(
                       backgroundColor: Theme.of(context).secondaryHeaderColor,):Container(),
-             noRecla ?Container(child:Text('tu n\'as aucun reclamation')): getRelasBool&&!failGetReclas? 
+             noRecla ?Container(child:Text(AppLocalization.of(context).AucunRecla)): getRelasBool&&!failGetReclas? 
              Expanded(
+               child:RefreshIndicator(
+                 semanticsValue: 'refresh',
+                 semanticsLabel: 'refresh h',
+                 key:refreshKey,
+                 color: Theme.of(context).secondaryHeaderColor,
+                 backgroundColor: Theme.of(context).accentColor,
+                 onRefresh:refresh,
                  child:ListView.builder(
-                                      itemCount: listReclas.length,
+                                      itemCount: listReclas?.length??0,
                                       itemBuilder: (context,index){
                                         return Container(
                                            margin: EdgeInsets.all(5),
-                                            color: Theme.of(context).secondaryHeaderColor,
+                                            // color: Theme.of(context).secondaryHeaderColor,
                                           child:Column(
                                           children:<Widget>[
                                             Container(
-                                              padding: EdgeInsets.only(right: 10,top: 5),
-                                            child:Text('${listReclas[index].body}',
-                                            style: TextStyle(decoration:TextDecoration.none,fontSize: 15,
-                                            wordSpacing: 0.5
-                                            ),textAlign: TextAlign.right,),
+                                              
+                                              color: Theme.of(context).secondaryHeaderColor,
+                                              padding: EdgeInsets.only(left:10,right:10),
+                                              child:Row(
+                                                textDirection: TextDirection.ltr,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children:<Widget>[
+                                                  Text('${listReclas[index].type}'),
+                                                  // reponses.containsKey(listReclas[index].id_recla.toString())?
+                                                  Text('${reponses?.getString(listReclas[index].id_recla.toString()+'etat')??'nonk résolu'}'),
+                                                ]
+                                              )
                                             ),
                                             Container(
+                                              width: MediaQuery.of(context).size.width,
+                                              color: Theme.of(context).secondaryHeaderColor,
+                                              padding: EdgeInsets.only(right: 10,top: 5,left: 10),
+                                            child:Text('${listReclas[index].body}',
+                                            style: TextStyle(decoration:TextDecoration.none,fontSize: 15,
+                                            wordSpacing: 0.5,
+                                            letterSpacing: 0
+                                            ),textAlign: TextAlign.center,),
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.all(0),
                                               color:Colors.blue,
                                               child:Row(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                               children:<Widget>[ 
                                                Padding(
@@ -115,23 +191,41 @@ Map<String,dynamic> infosPostRecla ;
                                                 child: Text('${listReclas[index].dateNow}'),),
                                                 Padding(
                                                 padding: EdgeInsets.all(5),
-                                                child: Text('${listReclas[index].mat}'),),
+                                                child: Text('${listReclas[index].recu}'),),
                                                 Padding(
                                                 padding: EdgeInsets.all(5),
                                                 child: Text('${listReclas[index].nni}'),),
                                                      ]
                                             )
                                             ),
+                                            Container(
+                                              width: MediaQuery.of(context).size.width-20,
+                                              margin: EdgeInsets.only(left:10,right:10),
+                                              padding: EdgeInsets.all(10),
+                                              child: Text('${reponses?.getString(listReclas[index].id_recla.toString()+'body')??''}',textAlign: TextAlign.center,),
+                                              decoration: BoxDecoration(
+                                                color:Colors.green.withOpacity(0.5),
+                                                border: Border(top:BorderSide(color:Theme.of(context).accentColor),
+                                                bottom:BorderSide(color:Theme.of(context).accentColor),
+                                                left:BorderSide(color:Theme.of(context).accentColor),
+                                                right:BorderSide(color:Theme.of(context).accentColor)),
+                                                borderRadius: BorderRadius.all(Radius.circular(12))
+                                              ),
+                                            )
                                           ],
                                         )
                                         );
                                       },
                                       ),
-                                  ) :getRelasBool&&failGetReclas ?Container(
+                                  )) :getRelasBool&&failGetReclas ?Container(
                           padding: EdgeInsets.only(top:60),
                           child:RaisedButton(
                             
-                            onPressed:(){;init();},
+                            onPressed:(){
+                              setState(() {
+                                failGetReclas=true;noRecla = false;getRelasBool=false;
+                              });
+                              refresh();},
                             child: Text('refresh!!'),)
                           ): Center(child: Text('Loading....'),)
                         ,
@@ -147,8 +241,7 @@ Map<String,dynamic> infosPostRecla ;
                                ),
                                child:InkWell( 
                                       onTap: (){
-                                        _dilog();
-                                        init();
+                                        Navigator.of(context).pushNamed('/addRecla');
                                       },
                                      child:Icon(Icons.create,color: Theme.of(context).primaryColor,size: 25,)
                                  )
@@ -156,15 +249,46 @@ Map<String,dynamic> infosPostRecla ;
     );
   }
 
-  void _dilog(){posted = false;
-  showGeneralDialog(
-    barrierLabel: 'Label',
-    barrierDismissible: true,
-    barrierColor: Color(0xFF2e3a8a),
-     transitionDuration: Duration(milliseconds: 0),
-    context: context, 
-    pageBuilder: (context,anim1,anim2){
-            return Scaffold(  
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+class addRecla extends StatefulWidget {
+  @override
+  _addReclaState createState() => _addReclaState();
+}
+
+class _addReclaState extends State<addRecla> {
+  TextEditingController textController =TextEditingController();
+TextEditingController matController = TextEditingController();
+TextEditingController recuController = TextEditingController();
+TextEditingController nniController = TextEditingController();
+GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+String type ,typeCheck='';
+var formKey = GlobalKey<FormState>();
+HelperDB DB = HelperDB();
+List<reclamation> listReclas;
+List getReclas=[];
+Map<String,dynamic> infosPostRecla ;
+ bool progress = false,posted=false;
+ 
+  String dateFromatted = '',lang='',recla_id;
+ int index = 0;
+  @override
+  Widget build(BuildContext context) {
+    lang = Localizations.localeOf(context).languageCode;
+    return Scaffold(  
+      key: _scaffoldKey,
+      appBar: AppBar(title:Text('add recla')),
               backgroundColor: Color(0xFF2e3a8a),
             body:GestureDetector(
               onTap: (){
@@ -179,11 +303,11 @@ Map<String,dynamic> infosPostRecla ;
                                 Card(
                                   color: Colors.white,
                                   child: Padding(
-                                      padding: EdgeInsets.only(top: 20,left: 15,right:35),
+                                      padding: EdgeInsets.only(top: 10,left: 15,right:15),
                                      child: TextFormField(
                                       controller: textController,  
                                       validator: (val)=>val.length < 10 ?'reclammation doit contient plus du 20 mots':null,
-                                      maxLines: 12,
+                                      maxLines: 8,
                                       decoration: InputDecoration.collapsed(hintText: " أكتب أستفسارك هنا : تنبيه إلي أن أي إساءه يحاسب عليها"), 
                                       ),
                                       ),),
@@ -258,6 +382,29 @@ Map<String,dynamic> infosPostRecla ;
                                             )  
                                       ),
                                       SizedBox(height: 15,),
+                                      Padding(
+                                    padding: EdgeInsets.only(left:70,right:70),
+                                    child: DropdownButton(
+                                      style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
+                                      elevation: 24,
+                                      focusColor: Theme.of(context).accentColor,
+                                      iconEnabledColor: Theme.of(context).secondaryHeaderColor,
+                                      hint:Text('type du dossier',textAlign: TextAlign.center,),
+                                      value: type,
+                                      items: [
+                                        DropdownMenuItem(child: Text('affiliation',),value: 'affiliation',),
+                                        DropdownMenuItem(child: Text('remboursement'),value: 'remboursement',),
+                                      ], 
+                                      onChanged: (val){
+                                        print(val.toString());
+                                        setState(() {
+                                          type=val.toString();
+                                        });
+                                        print(type);
+                                      },
+                                      ) 
+                                      ),
+                                      SizedBox(height: 15,),
                                 Padding(
                                     padding: EdgeInsets.only(left:55,right:55),
                                     child: Material(
@@ -268,9 +415,10 @@ Map<String,dynamic> infosPostRecla ;
                                               //  saveReclamation(); 
                                               //  _createAlbum();
                                             if(formKey.currentState.validate()){
+                                              if(type == null)
+                                               return Toast.show('selectionez le type du dossier!', context,duration: 2);
                                               saveReclamation(); 
-                                              
-                                                      Navigator.pop(context);}
+                                              }
                                                
                                               
                                              }, 
@@ -287,20 +435,19 @@ Map<String,dynamic> infosPostRecla ;
                             
                       )),
                    ));
-    });
-}
-void saveReclamation()async{
-  setState(() {progress=true;});
+  }
+  void saveReclamation()async{
+  _showIndecator();
    var use = await SharedPreferences.getInstance();
       String imaUser = use.getString("recu");
      await _createAlbum(imaUser);
-     setState(() {progress=false;});
+    Navigator.pop(context);
      if(posted){
-    reclamation r = reclamation(textController.text,imaUser,matController.text,dateFromatted,nniController.text,recuController.text);
+    reclamation r = reclamation(recla_id,textController.text,imaUser,matController.text,dateFromatted,nniController.text,recuController.text,type);
     HelperDB DB = HelperDB();
     await DB.insertRecla(r);
-    init();
              }
+            //  Navigator.of(context).pushNamed('/Reclammation');
 }
 _createAlbum(String imaUser) async{
      
@@ -313,6 +460,7 @@ _createAlbum(String imaUser) async{
       'imat':matController.text,
       'nni':nniController.text,
       'recu':recuController.text,
+      'type':type,
       'lang':lang,
     },
   );
@@ -322,24 +470,44 @@ _createAlbum(String imaUser) async{
     infosPostRecla = json.decode(reponse.body);
  
  }catch(e){
-   
-   Toast.show('error of service', context,duration: 3,gravity:Toast.CENTER);
+   Toast.show('error ofn service', context,duration: 3,gravity:Toast.CENTER);
    return null;
  }
  if(infosPostRecla.isNotEmpty){ 
   if(infosPostRecla["invalid"]=="true"){
     Toast.show('IDN invalid', context,duration: 3,gravity: Toast.CENTER);
     posted=false;
+     
     return null;
   }
-    scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(infosPostRecla["desc"]),)) ;
+    _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(infosPostRecla["desc"]),)) ;
     if(infosPostRecla["success"] == "true"){
+                 recla_id = infosPostRecla['recla_id'].toString();
                 dateFromatted = infosPostRecla['date'];
                 posted = true;
+                
              return null;
    }
    }else  
       Toast.show('error of connection', context,duration: 3,gravity:Toast.CENTER);
  
 }
+_showIndecator(){
+         showGeneralDialog(
+          barrierLabel: 'progress',
+          barrierColor: Colors.white.withOpacity(0.4),
+          barrierDismissible: false,
+          transitionDuration: Duration(milliseconds: 0),
+           context: context, 
+           pageBuilder: (context,anim1,anim2){
+                 return Align(
+                      alignment: Alignment.topCenter,
+                      child: Container(
+                        padding: EdgeInsets.only(top:120),
+                        child: CircularProgressIndicator(),
+                      ),
+
+                 );
+         });
+           }
 }

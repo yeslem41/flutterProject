@@ -21,38 +21,43 @@ class HelperDB{
       return theDB;
   }
   void _onCreate(Database db,int version) async{
-           await db.execute("CREATE TABLE ReclaTable(id INTEGER PRIMARY KEY AUTOINCREMENT, body TEXT, Supermatricule TEXT,matricule TEXT,nni TEXT,recu TEXT,dateNow TEXT)");
-          
+           await db.execute("CREATE TABLE ReclaTable(id INTEGER PRIMARY KEY AUTOINCREMENT,id_recla TEXT, body TEXT, Supermatricule TEXT,matricule TEXT,nni TEXT,recu TEXT,dateNow TEXT,type TEXT)");
           
   }
   Future<void> insertRecla(reclamation recla)async{
           Database dbClient = await db;
-         await dbClient.rawInsert("INSERT INTO ReclaTable(body,Supermatricule,matricule,nni,recu,dateNow) VALUES(?,?,?,?,?,?)",[recla.toMap()['body'],recla.toMap()['superMat'],recla.toMap()['mat'],recla.toMap()['nni'],recla.toMap()['recu'],recla.toMap()['dateNow']]);
+         await dbClient.rawInsert("INSERT INTO ReclaTable(id_recla,body,Supermatricule,matricule,nni,recu,dateNow,type) VALUES(?,?,?,?,?,?,?,?)",[recla.toMap()['id_recla'],recla.toMap()['body'],recla.toMap()['superMat'],recla.toMap()['mat'],recla.toMap()['nni'],recla.toMap()['recu'],recla.toMap()['dateNow'],recla.toMap()['type']]);
         
   }
   Future<List<reclamation>> getAllRecla() async{
             Database dbClient = await db;
             var reclas =  await dbClient.query('ReclaTable',orderBy: 'id DESC');
-          await dbClient.close();
              List<reclamation> reclamations = new List();
         for (int i = 0; i < reclas.length; i++) {
-           reclamations.add(new reclamation(reclas[i]["body"], reclas[i]["Supermatricule"], reclas[i]["matricule"], reclas[i]["dateNow"],reclas[i]["nni"],reclas[i]["recu"]));
+           reclamations.add( reclamation(reclas[i]["id_recla"].toString(),reclas[i]["body"].toString(), reclas[i]["Supermatricule"].toString(), reclas[i]["matricule"].toString(), reclas[i]["dateNow"].toString(),reclas[i]["nni"].toString(),reclas[i]["recu"].toString(),reclas[i]["type"].toString()));
            }
            return reclamations;
   }
   Future<void> deleteAllReclas()async{
     Database database= await db;
-    int a = await database.delete('ReclaTable');
+    await database.delete('ReclaTable');
+     
   }
+  closeDB() async {
+final dataBase= await db;
+await dataBase.close();
+}
 }
 class reclamation {
+  String id_recla;
   String body;
   String superMat;
   String mat;
   String dateNow;
   String nni;
   String recu;
-  reclamation(this.body,this.superMat,this.mat,this.dateNow,this.nni,this.recu);
+  String type;
+  reclamation(this.id_recla,this.body,this.superMat,this.mat,this.dateNow,this.nni,this.recu,this.type);
 
   Map<String,dynamic> toMap(){
     var map = <String,dynamic>{
@@ -62,6 +67,8 @@ class reclamation {
       'dateNow':dateNow,
       'nni':nni,
       'recu':recu,
+      'type':type,
+      'id_recla':id_recla
             };
       return map;
   }
@@ -72,6 +79,8 @@ class reclamation {
                  dateNow = map['dateNow'];
                  nni = map['nni'];
                  recu = map['recu'];
+                 type=map['type'];
+                 id_recla=map['id_recla'];
   }
 
 }

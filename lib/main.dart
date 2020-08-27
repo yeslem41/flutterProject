@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fluttercnam/locale/locales.dart';
  
+ 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences login = await SharedPreferences.getInstance();
@@ -83,7 +84,8 @@ class MyApp extends StatelessWidget{
         '/LoginPage':(_)=>LoginPage(),
         '/Reclammation':(_)=>Reclammation(),
         '/deconnected':(_)=>Deconnect(),
-        '/us':(_)=>aboutUs()
+        '/us':(_)=>aboutUs(),
+        '/addRecla':(_)=>addRecla(),
       }
     );
   }

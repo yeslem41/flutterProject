@@ -187,7 +187,7 @@ class _homePageState extends State<homePage> {
 
                       padding: frlang ? EdgeInsets.only(left: 20) : EdgeInsets.only(right: 20),
                       child:Radio(
-                        value: 'rembourser',
+                        value: 'remboursement',
                         groupValue: checkedInput,
                         onChanged: (val){setState(() { checkedInput = val.toString();});  },
                         activeColor: Colors.black,

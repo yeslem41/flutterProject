@@ -97,9 +97,10 @@ class _DeconnectState extends State<Deconnect> {
              Toast.show('errer de connection', context,duration: 2,gravity: Toast.CENTER);
        }else{print(logeouts[0]["logeout"]);
          if(logeouts[0]["logeout"] == "true"){
-                    use.remove("login");
-                     use.remove("recu");
-                     use.remove("getReclamations");
+                    // use.remove("login");
+                    //  use.remove("recu");
+                    //  use.remove("getReclamations");
+                    use.clear();
                      DB.deleteAllReclas();
                      Navigator.pushAndRemoveUntil(
                                   context,

@@ -21,8 +21,9 @@ class _AfterRecuState extends State<AfterRecu> {
      TextEditingController textController = TextEditingController();
      TextEditingController nniController = TextEditingController();
      bool progress = false,snake=false,posted=false;
-     String snakeSms='',what='',recu='',dateFromatted='';
+     String snakeSms='',what='',recu='',dateFromatted='',lang,recla_id;
      GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+    
      var formKey = GlobalKey<FormState>();
   //   @override
   // void initState() {
@@ -33,6 +34,7 @@ class _AfterRecuState extends State<AfterRecu> {
  
   @override
   Widget build(BuildContext context) {
+    lang = Localizations.localeOf(context).languageCode;
        infoUser = ModalRoute.of(context).settings.arguments;
        recu = infoUser['recu'];
        if(Localizations.localeOf(context).languageCode == 'fr')
@@ -257,8 +259,7 @@ void saveReclamation()async{
       String imaUser = use.getString("recu");
      await _createAlbum(imaUser);
      if(posted){
-       print(dateFromatted);
-    reclamation r = reclamation(textController.text,imaUser,'',dateFromatted,nniController.text,infoUser["recu"]);
+    reclamation r = reclamation(recla_id,textController.text,imaUser,'',dateFromatted,nniController.text,infoUser["recu"],infoUser['cheked']);
     HelperDB DB = HelperDB();
     await DB.insertRecla(r);
     
@@ -276,6 +277,8 @@ _createAlbum(String imaUser) async{
       'imat':'null',
       'nni':nniController.text,
       'recu':infoUser["recu"],
+      'type':infoUser['cheked'],
+      'lang':lang,
     },
   );
    if(reponse.statusCode != 200)
@@ -291,12 +294,18 @@ _createAlbum(String imaUser) async{
  }
  setState(() {progress = false; });
  if(infosPostRecla.isNotEmpty){ 
+    if(infosPostRecla["invalid"]=="true"){
+    Toast.show('IDN invalid', context,duration: 3,gravity: Toast.CENTER);
+    posted=false;
+    return null;
+  }
     scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(infosPostRecla["desc"]),)) ;
     if(infosPostRecla["success"] == "true"){
+                recla_id = infosPostRecla['recla_id'];
                 dateFromatted = infosPostRecla['date'];
                 posted = true;
    
-   }
+   }else posted = false;
    }else  
       Toast.show('error of connection', context,duration: 3,gravity:Toast.CENTER);
  
