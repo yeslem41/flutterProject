@@ -58,7 +58,7 @@ class _curvedBarState extends State<curvedBar> {
               body: PageView(
                 controller: _controller,
                 onPageChanged:(index){
-                         setState(() {print(index);
+                         setState(() {
                             buttonBackColor = colorResponsible(index);
                               _page=index;});  
                 },
@@ -98,6 +98,7 @@ class homePage extends StatefulWidget {
 }
 
 class _homePageState extends State<homePage> {
+  List <String> langCode = ["ar","fr"];
     List <String> recuCharactaire=["1","2","3","4","5","6","7","8","9","0","/"];
     Color buttonBackColor ;
     var recuController =  TextEditingController();
@@ -121,6 +122,8 @@ class _homePageState extends State<homePage> {
   @override
   Widget build(BuildContext context) {
      String myLo = Localizations.localeOf(context).languageCode;
+     if(!langCode.contains(myLo))
+                myLo = 'fr';  
         if(myLo == 'fr')
               frlang = true;
         else  
@@ -215,7 +218,7 @@ class _homePageState extends State<homePage> {
                     maxLength: 11,
                     // !validateRecu(val)
                     textInputAction: TextInputAction.done,
-                    validator: (val)=> val==null ? AppLocalization.of(context).hintRecuFalse : null,
+                    validator: (val)=> !validateRecu(val) ? AppLocalization.of(context).hintRecuFalse : null,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
@@ -282,13 +285,13 @@ class _homePageState extends State<homePage> {
        setState(() {pressed=false;});
        if(!goBack)
            Navigator.pop(context,'success');
-         print(user); print("user");
+        
           if(!goBack){
                     if(user.isNotEmpty) {
                     if(user["recuId"]=="no" || user["ARid"]=="no"){
                           user.clear(); _dialog();
                            }else{
-                      user["recu"]=recuController.text; print(user);
+                      user["recu"]=recuController.text; 
                       Navigator.of(context).pushNamed('/AfterRecu', arguments: user);
                     }
                     }else{
@@ -319,8 +322,7 @@ _showIndecator(){
          }).then((val){
            if(val != 'success'){goBack = true;
             setState(() {pressed = false;});
-                    }else
-                    print('success');
+                    }
            });
            }
 _dialog() {

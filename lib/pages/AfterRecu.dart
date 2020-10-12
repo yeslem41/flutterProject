@@ -23,7 +23,7 @@ class _AfterRecuState extends State<AfterRecu> {
      bool progress = false,snake=false,posted=false;
      String snakeSms='',what='',recu='',dateFromatted='',lang,recla_id;
      GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-    
+    List <String> langCodes = ["ar","fr"];
      var formKey = GlobalKey<FormState>();
   //   @override
   // void initState() {
@@ -35,6 +35,8 @@ class _AfterRecuState extends State<AfterRecu> {
   @override
   Widget build(BuildContext context) {
     lang = Localizations.localeOf(context).languageCode;
+    if(!langCodes.contains(lang))
+         lang = 'fr';
        infoUser = ModalRoute.of(context).settings.arguments;
        recu = infoUser['recu'];
        if(Localizations.localeOf(context).languageCode == 'fr')
@@ -199,7 +201,7 @@ void _dilog(){
                                       controller: textController,  
                                       textAlign: Localizations.localeOf(context).languageCode=='fr' ? TextAlign.start:TextAlign.end,  
                                       maxLines: 13,
-                                      decoration: InputDecoration.collapsed(hintText: " أكتب أستفسارك هنا : تنبيه إلي أن أي إساءه يحاسب عليها"), 
+                                      decoration: InputDecoration.collapsed(hintText:AppLocalization.of(context).hintcontenurecla), 
                                       ),
                                       ),),
                                       SizedBox(height:15),
@@ -210,10 +212,10 @@ void _dilog(){
                                         child:TextFormField( 
                                             controller: nniController,
                                             textAlign: TextAlign.center,
-                                            validator: (val)=>val.length <= 5 ? 'enter matricule cnam' : null,
+                                            validator: (val)=>val.length==0?AppLocalization.of(context).nnivide:val.length != 10 ? AppLocalization.of(context).nniincorrect: null,
                                             obscureText: false,
                                             decoration: InputDecoration(
-                                              labelText:'nni Obligatoire',
+                                              labelText:AppLocalization.of(context).nni,
                                               contentPadding: EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 5.0),
                                               labelStyle: TextStyle(
                                                 color: Colors.black.withBlue(100),
@@ -240,7 +242,7 @@ void _dilog(){
                                                   Navigator.pop(context);
                                                        }
                                              }, 
-                                            child: Text('إرسال'),
+                                            child: Text(AppLocalization.of(context).envoyer),
                                             ),
                                             
                                             )  
@@ -259,7 +261,7 @@ void saveReclamation()async{
       String imaUser = use.getString("recu");
      await _createAlbum(imaUser);
      if(posted){
-    reclamation r = reclamation(recla_id,textController.text,imaUser,'',dateFromatted,nniController.text,infoUser["recu"],infoUser['cheked']);
+    reclamation r = reclamation(recla_id,textController.text,imaUser,'null',dateFromatted,nniController.text,infoUser["recu"],infoUser['cheked']);
     HelperDB DB = HelperDB();
     await DB.insertRecla(r);
     
@@ -295,17 +297,20 @@ _createAlbum(String imaUser) async{
  setState(() {progress = false; });
  if(infosPostRecla.isNotEmpty){ 
     if(infosPostRecla["invalid"]=="true"){
-    Toast.show('IDN invalid', context,duration: 3,gravity: Toast.CENTER);
+    Toast.show('NNI invalid', context,duration: 3,gravity: Toast.CENTER);
     posted=false;
     return null;
   }
     scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(infosPostRecla["desc"]),)) ;
     if(infosPostRecla["success"] == "true"){
-                recla_id = infosPostRecla['recla_id'];
+                recla_id = infosPostRecla['recla_id'].toString();
                 dateFromatted = infosPostRecla['date'];
                 posted = true;
+                return null;
    
-   }else posted = false;
+   }else{
+    posted = false;
+    }
    }else  
       Toast.show('error of connection', context,duration: 3,gravity:Toast.CENTER);
  
@@ -313,43 +318,7 @@ _createAlbum(String imaUser) async{
 
 }
 
-// _createAlbum(String imaUser) async{
-     
-//      setState(() {progress = true; });
-//      try{
-//   Response reponse = await post(
-//     'https://miage2a2i.000webhostapp.com/inquiry_post.php',
-//     body:<String, String>{
-//       'body': textController.text,
-//       'superUser':imaUser,
-//       'imat':matController.text,
-//       'nni':nniController.text,
-//       'recu':recuController.text,
-//     },
-//   );
-//   if(reponse.statusCode != 200)
-//                  throw "errer du server";
-//    setState(() {progress = false; });
-//     infosPostRecla = json.decode(reponse.body);
-//   print(infosPostRecla);
- 
-//  }catch(e){
-//    setState(() {progress = false; });
-//    Toast.show('error of service', context,duration: 3,gravity:Toast.CENTER);
-//    return null;
-//  }
-//  if(infosPostRecla.isNotEmpty){ 
-//   // if((infosPostRecla["success"] == "true") || (infosPostRecla["success"] == "fasle")){
-//     scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(infosPostRecla["desc"]),)) ;
-//     if(infosPostRecla["success"] == "true"){
-//                 dateFromatted = infosPostRecla['date'];
-//                 posted = true;
-   
-//    }
-//    }else  
-//       Toast.show('error of connection', context,duration: 3,gravity:Toast.CENTER);
- 
-// }
+
 
 
 

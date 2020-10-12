@@ -58,6 +58,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "notreMapgoogle":MessageLookupByLibrary.simpleMessage("الموقع الجغرافي"),
     "smsemail":MessageLookupByLibrary.simpleMessage("أرسل إميل"),
     "AucunRecla":MessageLookupByLibrary.simpleMessage('ليس لديك شكاوي'),
-
+    "deconnwelcome":MessageLookupByLibrary.simpleMessage('أهل بك! نتمني أنتكون مرتاحا مع إستخدام ماكنامي'),
+    "deconnatention":MessageLookupByLibrary.simpleMessage('ملاحظة'),
+    "deconnatentiondes":MessageLookupByLibrary.simpleMessage('إذاقمة بتسجيل الخروج ستحذف كل معلومات لدخول المره القادمه'),
+    "deconneBool":MessageLookupByLibrary.simpleMessage('الخروج'),
+    "creerecla":MessageLookupByLibrary.simpleMessage('أضف شكاية'),
+    "taillerecla":MessageLookupByLibrary.simpleMessage('الشكاية يجب أن تتكون من 80 حرف'),
+    "hintcontenurecla":MessageLookupByLibrary.simpleMessage('نص الشكاية'),
+    "hintmatricule":MessageLookupByLibrary.simpleMessage('inam أدخل '),
+    "nniincorrect":MessageLookupByLibrary.simpleMessage('الرقم غير مناسب'),
+    "nnivide":MessageLookupByLibrary.simpleMessage('الرقم ضروري'),
+    "dossiertype":MessageLookupByLibrary.simpleMessage('نوع الملف'),
+    "envoyer":MessageLookupByLibrary.simpleMessage('إرسال'),
+    "nni":MessageLookupByLibrary.simpleMessage('الرقم الوطن'),
+    "selectiontype":MessageLookupByLibrary.simpleMessage('حدد نوع الملف!'),
+    "norepear":MessageLookupByLibrary.simpleMessage('لا إجابة بعد!'),
   };
 }

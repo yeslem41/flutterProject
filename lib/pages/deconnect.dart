@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:fluttercnam/locale/locales.dart';
 import 'package:http/http.dart'as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -42,7 +43,7 @@ class _DeconnectState extends State<Deconnect> {
                                           child:Center(  
                                                   child:Column(
                                                       children:<Widget> [
-                                                        Text('أهل بك! نتمني أنتكون مرتاحا مع إستخدام ماكنامي',textAlign: TextAlign.end,),
+                                                        Text(AppLocalization.of(context).deconnwelcome,textAlign: TextAlign.justify,),
                                                         Divider(color:Theme.of(context).primaryColor ,),
                                                         Text(
                                                             imaUser
@@ -53,9 +54,9 @@ class _DeconnectState extends State<Deconnect> {
                                                              color: Colors.black,
                                                            ),
                                                             children: <TextSpan>[
-                                                             TextSpan(text: 'تنبيه: ',style: TextStyle(color:Colors.red,fontSize: 20)),
+                                                             TextSpan(text: AppLocalization.of(context).deconnatention,style: TextStyle(color:Theme.of(context).accentColor,fontSize: 20)),
                                                              TextSpan(
-                                                               text:'إذاقمة بتسجيل الخروج ستحذف كل معلومات لدخول المره القادمه'
+                                                               text:AppLocalization.of(context).deconnatentiondes
                                                              )
                                                             ]
                                                           ),
@@ -64,13 +65,13 @@ class _DeconnectState extends State<Deconnect> {
                                                         Material(
                                                           elevation: 5.0,
                                                           borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                                                          color: Colors.red,
+                                                          color: Theme.of(context).accentColor,
                                                           child: MaterialButton(
                                                             
                                                             padding: EdgeInsets.fromLTRB(40,0,40,0,),
                                                             onPressed: _logoutConfirmed,
                                                             child: Text(
-                                                              'logout'
+                                                              AppLocalization.of(context).deconneBool
                                                             ),),)
 
                                                       ]
@@ -94,7 +95,7 @@ class _DeconnectState extends State<Deconnect> {
        }
        if(logeouts.isEmpty){
              Navigator.pop(context);
-             Toast.show('errer de connection', context,duration: 2,gravity: Toast.CENTER);
+             Toast.show(AppLocalization.of(context).erreurConnection, context,duration: 2,gravity: Toast.CENTER);
        }else{print(logeouts[0]["logeout"]);
          if(logeouts[0]["logeout"] == "true"){
                     // use.remove("login");
@@ -108,8 +109,7 @@ class _DeconnectState extends State<Deconnect> {
                                     builder: (context)=>LoginPage(),
                                   ),
                                   (Route<dynamic> route)=>false);
-          }else 
-                   print('logeout false');        
+          }      
        }   
 }
 

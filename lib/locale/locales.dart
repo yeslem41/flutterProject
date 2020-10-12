@@ -74,13 +74,41 @@ String get gerstionRecla{
         desc: 'the app\'s fragment message it is also pretty'
     );
   }
-    String get deconnecter{
+String get deconnecter{
     return Intl.message(
         'app\'s deconnecter',
         name: 'deconnecter',
         desc: 'the app\'s deconnecter message it is also pretty'
     );
   }
+String get deconnwelcome{
+    return Intl.message(
+        'app\'s deconnwelcome',
+        name: 'deconnwelcome',
+        desc: 'the app\'s deconnwelcome message it is also pretty'
+    );
+  }  
+String get deconnatention{
+    return Intl.message(
+        'app\'s deconnatention',
+        name: 'deconnatention',
+        desc: 'the app\'s deconnatention message it is also pretty'
+    );
+  }
+String get deconnatentiondes{
+    return Intl.message(
+        'app\'s deconnatentiondes',
+        name: 'deconnatentiondes',
+        desc: 'the app\'s deconnatentiondes message it is also pretty'
+    );
+  }  
+String get deconneBool{
+    return Intl.message(
+        'app\'s deconneBool',
+        name: 'deconneBool',
+        desc: 'the app\'s deconneBool message it is also pretty'
+    );
+  }       
  String get choisir{
     return Intl.message(
         'app\'s choisi',
@@ -278,7 +306,84 @@ String get gerstionRecla{
         desc: 'the app\'s AucunRecla message it is also pretty'
     );
   }
-
+String get creerecla{
+    return Intl.message(
+        'app\'s creerecla',
+        name: 'creerecla',
+        desc: 'the app\'s creerecla message it is also pretty'
+    );
+  }
+  String get taillerecla{
+    return Intl.message(
+        'app\'s taillerecla',
+        name: 'taillerecla',
+        desc: 'the app\'s taillerecla message it is also pretty'
+    );
+  }
+String get hintcontenurecla{
+    return Intl.message(
+        'app\'s hintcontenurecla',
+        name: 'hintcontenurecla',
+        desc: 'the app\'s hintcontenurecla message it is also pretty'
+    );
+  }  
+String get hintmatricule{
+    return Intl.message(
+        'app\'s hintmatricule',
+        name: 'hintmatricule',
+        desc: 'the app\'s hintmatricule message it is also pretty'
+    );
+  }
+String get nniincorrect{
+    return Intl.message(
+        'app\'s nniincorrect',
+        name: 'nniincorrect',
+        desc: 'the app\'s nniincorrect message it is also pretty'
+    );
+  }  
+String get nnivide{
+    return Intl.message(
+        'app\'s nnivide',
+        name: 'nnivide',
+        desc: 'the app\'s nnivide message it is also pretty'
+    );
+  } 
+String get dossiertype{
+    return Intl.message(
+        'app\'s dossiertype',
+        name: 'dossiertype',
+        desc: 'the app\'s dossiertype message it is also pretty'
+    );
+  } 
+String get envoyer{
+    return Intl.message(
+        'app\'s envoyer',
+        name: 'envoyer',
+        desc: 'the app\'s envoyer message it is also pretty'
+    );
+  }  
+String get norepear{
+    return Intl.message(
+        'app\'s norepear',
+        name: 'norepear',
+        desc: 'the app\'s norepear message it is also pretty'
+    );
+  } 
+String get nni{
+    return Intl.message(
+        'app\'s nni',
+        name: 'nni',
+        desc: 'the app\'s nni message it is also pretty'
+    );
+  } 
+String get selectiontype{
+    return Intl.message(
+        'app\'s selectiontype',
+        name: 'selectiontype',
+        desc: 'the app\'s selectiontype message it is also pretty'
+    );
+  }           
+ 
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalization> {

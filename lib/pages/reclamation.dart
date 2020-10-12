@@ -165,7 +165,7 @@ Map<String,dynamic> infosPostRecla ;
                                                 children:<Widget>[
                                                   Text('${listReclas[index].type}'),
                                                   // reponses.containsKey(listReclas[index].id_recla.toString())?
-                                                  Text('${reponses?.getString(listReclas[index].id_recla.toString()+'etat')??'nonk résolu'}'),
+                                                  Text('${reponses?.getString(listReclas[index].id_recla.toString()+'etat')??'non résolu'}'),
                                                 ]
                                               )
                                             ),
@@ -201,8 +201,8 @@ Map<String,dynamic> infosPostRecla ;
                                             Container(
                                               width: MediaQuery.of(context).size.width-20,
                                               margin: EdgeInsets.only(left:10,right:10),
-                                              padding: EdgeInsets.all(10),
-                                              child: Text('${reponses?.getString(listReclas[index].id_recla.toString()+'body')??''}',textAlign: TextAlign.center,),
+                                              padding:reponses?.getString(listReclas[index].id_recla.toString()+'body')!=null? EdgeInsets.all(10):EdgeInsets.all(0),
+                                              child: Text('${reponses?.getString(listReclas[index].id_recla.toString()+'body')??AppLocalization.of(context).norepear}',textAlign: TextAlign.center,),
                                               decoration: BoxDecoration(
                                                 color:Colors.green.withOpacity(0.5),
                                                 border: Border(top:BorderSide(color:Theme.of(context).accentColor),
@@ -236,7 +236,7 @@ Map<String,dynamic> infosPostRecla ;
                                width: 40,
                                height:40,
                                decoration: BoxDecoration(
-                               color: Colors.red,
+                               color: Theme.of(context).accentColor,
                                  borderRadius:BorderRadius.all(Radius.circular(50))
                                ),
                                child:InkWell( 
@@ -280,15 +280,17 @@ List<reclamation> listReclas;
 List getReclas=[];
 Map<String,dynamic> infosPostRecla ;
  bool progress = false,posted=false;
- 
+ List <String> langCodes = ["ar","fr"];
   String dateFromatted = '',lang='',recla_id;
  int index = 0;
   @override
   Widget build(BuildContext context) {
     lang = Localizations.localeOf(context).languageCode;
+    if(!langCodes.contains(lang))
+              lang = 'fr';
     return Scaffold(  
       key: _scaffoldKey,
-      appBar: AppBar(title:Text('add recla')),
+      appBar: AppBar(title:Text(AppLocalization.of(context).creerecla,)),
               backgroundColor: Color(0xFF2e3a8a),
             body:GestureDetector(
               onTap: (){
@@ -306,9 +308,9 @@ Map<String,dynamic> infosPostRecla ;
                                       padding: EdgeInsets.only(top: 10,left: 15,right:15),
                                      child: TextFormField(
                                       controller: textController,  
-                                      validator: (val)=>val.length < 10 ?'reclammation doit contient plus du 20 mots':null,
+                                      validator: (val)=>val.length < 50 ?'${AppLocalization.of(context).taillerecla}':null,
                                       maxLines: 8,
-                                      decoration: InputDecoration.collapsed(hintText: " أكتب أستفسارك هنا : تنبيه إلي أن أي إساءه يحاسب عليها"), 
+                                      decoration: InputDecoration.collapsed(hintText: '${AppLocalization.of(context).hintcontenurecla}'), 
                                       ),
                                       ),),
                                       
@@ -321,10 +323,10 @@ Map<String,dynamic> infosPostRecla ;
                                     child: TextFormField( 
                                             controller: recuController,
                                             textAlign: TextAlign.center,
-                                            validator: (val)=>val.length <= 5 ? 'enter recu du dossier' : null,
+                                            validator: null,
                                             obscureText: false,
                                             decoration: InputDecoration(
-                                              labelText:'recu du dossier',
+                                              labelText:AppLocalization.of(context).hintRecu,
                                               contentPadding: EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 5.0),
                                               labelStyle: TextStyle(
                                                 color: Colors.black.withBlue(100),
@@ -343,10 +345,10 @@ Map<String,dynamic> infosPostRecla ;
                                     child: TextFormField( 
                                             controller: matController,
                                             textAlign: TextAlign.center,
-                                            validator: (val)=>val.length <= 5 ? 'enter matricule cnam' : null,
+                                            validator:null,
                                             obscureText: false,
                                             decoration: InputDecoration(
-                                              labelText:'matricule du cnam',
+                                              labelText:AppLocalization.of(context).hintmatricule,
                                               contentPadding: EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 5.0),
                                               labelStyle: TextStyle(
                                                 color: Colors.black.withBlue(100),
@@ -365,10 +367,10 @@ Map<String,dynamic> infosPostRecla ;
                                     child: TextFormField( 
                                             controller: nniController,
                                             textAlign: TextAlign.center,
-                                            validator: (val)=>val.length <= 5 ? 'enter matricule cnam' : null,
+                                            validator: (val)=>val.length==0?AppLocalization.of(context).nnivide:val.length != 10 ? AppLocalization.of(context).nniincorrect: null,
                                             obscureText: false,
                                             decoration: InputDecoration(
-                                              labelText:'nni Obligatoire',
+                                              labelText:AppLocalization.of(context).nni,
                                               contentPadding: EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 5.0),
                                               labelStyle: TextStyle(
                                                 color: Colors.black.withBlue(100),
@@ -389,11 +391,11 @@ Map<String,dynamic> infosPostRecla ;
                                       elevation: 24,
                                       focusColor: Theme.of(context).accentColor,
                                       iconEnabledColor: Theme.of(context).secondaryHeaderColor,
-                                      hint:Text('type du dossier',textAlign: TextAlign.center,),
+                                      hint:Text(AppLocalization.of(context).dossiertype,textAlign: TextAlign.center,),
                                       value: type,
                                       items: [
-                                        DropdownMenuItem(child: Text('affiliation',),value: 'affiliation',),
-                                        DropdownMenuItem(child: Text('remboursement'),value: 'remboursement',),
+                                        DropdownMenuItem(child: Text(AppLocalization.of(context).choiDossier,),value: 'affiliation',),
+                                        DropdownMenuItem(child: Text(AppLocalization.of(context).choiRembourser),value: 'remboursement',),
                                       ], 
                                       onChanged: (val){
                                         print(val.toString());
@@ -416,7 +418,7 @@ Map<String,dynamic> infosPostRecla ;
                                               //  _createAlbum();
                                             if(formKey.currentState.validate()){
                                               if(type == null)
-                                               return Toast.show('selectionez le type du dossier!', context,duration: 2);
+                                               return Toast.show(AppLocalization.of(context).selectiontype, context,duration: 2);
                                               saveReclamation(); 
                                               }
                                                
@@ -424,7 +426,7 @@ Map<String,dynamic> infosPostRecla ;
                                              }, 
                                             // // Scaffold.of(context).showSnackBar(SnackBar(content: Text('first test in flutter')));
                                           
-                                            child: Text('إرسال'),
+                                            child: Text(AppLocalization.of(context).envoyer),
                                             ),
                                             
                                             )  
@@ -450,7 +452,9 @@ Map<String,dynamic> infosPostRecla ;
             //  Navigator.of(context).pushNamed('/Reclammation');
 }
 _createAlbum(String imaUser) async{
-     
+     String m=matController.text;
+     print(textController.text);print(imaUser);print(matController.text);print(nniController.text);print(recuController.text);
+     print(type);print(lang);print(m);
      try{
   Response reponse = await post(
     'https://miage2a2i.000webhostapp.com/inquiry_post.php',
@@ -465,12 +469,12 @@ _createAlbum(String imaUser) async{
     },
   );
   if(reponse.statusCode != 200)
-                 throw "errer du server";
+         throw "errer du server";
    
     infosPostRecla = json.decode(reponse.body);
  
  }catch(e){
-   Toast.show('error ofn service', context,duration: 3,gravity:Toast.CENTER);
+   Toast.show('error du service', context,duration: 3,gravity:Toast.CENTER);
    return null;
  }
  if(infosPostRecla.isNotEmpty){ 
@@ -489,7 +493,7 @@ _createAlbum(String imaUser) async{
              return null;
    }
    }else  
-      Toast.show('error of connection', context,duration: 3,gravity:Toast.CENTER);
+      Toast.show(AppLocalization.of(context).erreurService, context,duration: 3,gravity:Toast.CENTER);
  
 }
 _showIndecator(){

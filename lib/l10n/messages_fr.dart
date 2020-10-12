@@ -58,5 +58,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "notreMapgoogle":MessageLookupByLibrary.simpleMessage("Cnam sur maps"),
     "smsemail":MessageLookupByLibrary.simpleMessage("Envoyez email"),
     "AucunRecla":MessageLookupByLibrary.simpleMessage('tu n\'as aucun reclamation'),
+    "deconnwelcome":MessageLookupByLibrary.simpleMessage('Bienvenue! Nous espérons que vous etes à l\'aise avec Macnami'),
+    "deconnatention":MessageLookupByLibrary.simpleMessage('Attention! '),
+    "deconnatentiondes":MessageLookupByLibrary.simpleMessage('Si vous vous déconnectez, toutes les informations de connexion seront supprimées '),
+    "deconneBool":MessageLookupByLibrary.simpleMessage('déconnecté'),
+    "creerecla":MessageLookupByLibrary.simpleMessage('ajout du reclamation'),
+    "taillerecla":MessageLookupByLibrary.simpleMessage('reclammation doit contient plus du 80 caractaire'),
+    "hintcontenurecla":MessageLookupByLibrary.simpleMessage('contenu du reclamation'),
+    "hintmatricule":MessageLookupByLibrary.simpleMessage('entrez matricule'),
+    "nniincorrect":MessageLookupByLibrary.simpleMessage('nni susceptible'),
+    "nnivide":MessageLookupByLibrary.simpleMessage('nni obligatoire'),
+    "dossiertype":MessageLookupByLibrary.simpleMessage('type du dossier'),
+    "envoyer":MessageLookupByLibrary.simpleMessage('Envoyer'),
+    "nni":MessageLookupByLibrary.simpleMessage('NNI'),
+    "selectiontype":MessageLookupByLibrary.simpleMessage('selectionez le type du dossier!'),
+    "norepear":MessageLookupByLibrary.simpleMessage('pas encore de réponse!'),
+    
   };
-}
+} 
+
