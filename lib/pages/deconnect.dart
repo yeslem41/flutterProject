@@ -43,12 +43,12 @@ class _DeconnectState extends State<Deconnect> {
                                           child:Center(  
                                                   child:Column(
                                                       children:<Widget> [
-                                                        Text(AppLocalization.of(context).deconnwelcome,textAlign: TextAlign.justify,),
+                                                        Text(AppLocalization.of(context).deconnwelcome,),
                                                         Divider(color:Theme.of(context).primaryColor ,),
                                                         Text(
                                                             imaUser
                                                         ),
-                                                        RichText(textAlign:TextAlign.end,
+                                                        RichText(
                                                           text: TextSpan(
                                                            style: TextStyle(
                                                              color: Colors.black,

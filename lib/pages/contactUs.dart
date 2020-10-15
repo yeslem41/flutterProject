@@ -32,20 +32,16 @@ class _aboutUsState extends State<aboutUs> with SingleTickerProviderStateMixin{
    void sendMail()async{
      final Uri params = Uri(
                         scheme: 'mailto',
-                        path: 'wedoureus@gmail.com',
-                        query: 'subject=email to cnam : first test&body=my id: 2404070602 i don\'t get my recu and my inam ', //add subject and body here
+                        path: 'cnam.mr@gmail.com',
+                        query: 'subject=reclammation&body=body', //add subject and body here
                       );
     if(await canLaunch(params.toString())){
           await launch(params.toString());
     }else 
-       Toast.show('your device can call from here. do call from phone\'s call', context);
+       Toast.show('your device can\'t email from here. do email from email\'s gmail', context);
   }
    void visiteCnam(String url)async{
-    //  final Uri params = Uri(
-    //                     scheme: 'https://google.com',
-    //                     path: 'wedoureus@gmail.com',
-    //                     query: 'subject=email to cnam : first test&body=my id: 2404070602 i don\'t get my recu and my inam ', //add subject and body here
-    //                   );
+   
     if(await canLaunch(url)){
           await launch(url);
     }else 

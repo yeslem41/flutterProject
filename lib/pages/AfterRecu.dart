@@ -198,8 +198,8 @@ void _dilog(){
                                   child: Padding(
                                       padding: EdgeInsets.only(top: 20,left: 15,right:35),
                                      child: TextFormField(
+                                       
                                       controller: textController,  
-                                      textAlign: Localizations.localeOf(context).languageCode=='fr' ? TextAlign.start:TextAlign.end,  
                                       maxLines: 13,
                                       decoration: InputDecoration.collapsed(hintText:AppLocalization.of(context).hintcontenurecla), 
                                       ),
